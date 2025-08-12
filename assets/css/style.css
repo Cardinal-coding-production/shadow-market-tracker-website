@@ -261,6 +261,32 @@ h6 { font-size: var(--font-size-lg); }
   flex-wrap: wrap;
 }
 
+.hero-powered {
+  margin: var(--spacing-lg) 0;
+  text-align: center;
+}
+
+.powered-text {
+  display: inline-block;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background: linear-gradient(135deg, var(--glass-bg), rgba(187, 0, 255, 0.15));
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-shadow: 0 0 10px var(--glow-primary);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.powered-text:hover {
+  background: linear-gradient(135deg, rgba(187, 0, 255, 0.15), rgba(187, 0, 255, 0.25));
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 20px var(--glow-primary);
+  transform: translateY(-2px);
+}
+
 .hero-stats {
   display: flex;
   justify-content: center;
