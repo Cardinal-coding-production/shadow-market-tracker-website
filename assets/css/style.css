@@ -626,6 +626,13 @@ h6 { font-size: var(--font-size-lg); }
   text-shadow: 0 0 8px var(--glow-primary);
 }
 
+.footer-address {
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  margin-top: var(--spacing-sm);
+}
+
 .footer-bottom {
   text-align: center;
   padding-top: var(--spacing-xl);
