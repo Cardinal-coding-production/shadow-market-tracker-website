@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Shadow Market Tracker</title>
+    <meta name="description" content="Complete your Shadow Market Tracker purchase">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">
+                    <span class="nav-logo">🔍</span>
+                    <span class="nav-title">Shadow Market Tracker</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="products.html" class="nav-link">Products</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <div class="checkout-header">
+                <h1>Secure Checkout</h1>
+                <div class="checkout-steps">
+                    <div class="step active">
+                        <span class="step-number">1</span>
+                        <span class="step-label">Order Review</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <span class="step-label">Payment</span>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <span class="step-label">Confirmation</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-content">
+                <!-- Order Summary -->
+                <div class="checkout-main">
+                    <div class="checkout-card">
+                        <h2>Order Summary</h2>
+                        <div class="order-items" id="checkoutItems">
+                            <!-- Items will be populated by JavaScript -->
+                        </div>
+                        
+                        <div class="order-totals">
+                            <div class="total-row">
+                                <span>Subtotal:</span>
+                                <span>₹<span id="subtotal">0</span></span>
+                            </div>
+                            <div class="total-row">
+                                <span>GST (18%):</span>
+                                <span>₹<span id="gst">0</span></span>
+                            </div>
+                            <div class="total-row total-final">
+                                <span><strong>Total:</strong></span>
+                                <span><strong>₹<span id="finalTotal">0</span></strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Information -->
+                    <div class="checkout-card">
+                        <h2>Customer Information</h2>
+                        <form id="checkoutForm" class="checkout-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company">Company Name</label>
+                                <input type="text" id="company" name="company">
+                            </div>
+
+                            <h3>Billing Address</h3>
+                            <div class="form-group">
+                                <label for="address">Street Address *</label>
+                                <input type="text" id="address" name="address" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">City *</label>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="state">State *</label>
+                                    <input type="text" id="state" name="state" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pincode">PIN Code *</label>
+                                    <input type="text" id="pincode" name="pincode" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="country">Country *</label>
+                                <select id="country" name="country" required>
+                                    <option value="IN" selected>India</option>
+                                    <option value="US">United States</option>
+                                    <option value="GB">United Kingdom</option>
+                                    <option value="CA">Canada</option>
+                                    <option value="AU">Australia</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="checkout-card">
+                        <h2>Payment Method</h2>
+                        <div class="payment-methods">
+                            <div class="payment-option">
+                                <input type="radio" id="payuCard" name="paymentMethod" value="payu-card" checked>
+                                <label for="payuCard">
+                                    <div class="payment-info">
+                                        <strong>Credit/Debit Card</strong>
+                                        <span>Visa, Mastercard, RuPay</span>
+                                    </div>
+                                    <div class="payment-logos">💳</div>
+                                </label>
+                            </div>
+                            
+                            <div class="payment-option">
+                                <input type="radio" id="payuUpi" name="paymentMethod" value="payu-upi">
+                                <label for="payuUpi">
+                                    <div class="payment-info">
+                                        <strong>UPI</strong>
+                                        <span>PhonePe, Google Pay, Paytm</span>
+                                    </div>
+                                    <div class="payment-logos">📱</div>
+                                </label>
+                            </div>
+                            
+                            <div class="payment-option">
+                                <input type="radio" id="payuNetbanking" name="paymentMethod" value="payu-netbanking">
+                                <label for="payuNetbanking">
+                                    <div class="payment-info">
+                                        <strong>Net Banking</strong>
+                                        <span>All major Indian banks</span>
+                                    </div>
+                                    <div class="payment-logos">🏦</div>
+                                </label>
+                            </div>
+                            
+                            <div class="payment-option">
+                                <input type="radio" id="payuWallet" name="paymentMethod" value="payu-wallet">
+                                <label for="payuWallet">
+                                    <div class="payment-info">
+                                        <strong>Digital Wallets</strong>
+                                        <span>Paytm, Mobikwik, Freecharge</span>
+                                    </div>
+                                    <div class="payment-logos">💰</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="checkout-card">
+                        <div class="terms-section">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeTerms" required>
+                                <span class="checkmark"></span>
+                                I agree to the <a href="terms.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="agreeRefund">
+                                <span class="checkmark"></span>
+                                I understand the <a href="refund-policy.html" target="_blank">Refund Policy</a>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="subscribeNewsletter">
+                                <span class="checkmark"></span>
+                                Subscribe to product updates and newsletters
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary Sidebar -->
+                <div class="checkout-sidebar">
+                    <div class="summary-card">
+                        <h3>Order Summary</h3>
+                        <div class="summary-items" id="sidebarItems">
+                            <!-- Items populated by JavaScript -->
+                        </div>
+                        
+                        <div class="summary-totals">
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span>₹<span id="sidebarSubtotal">0</span></span>
+                            </div>
+                            <div class="summary-row">
+                                <span>GST (18%):</span>
+                                <span>₹<span id="sidebarGst">0</span></span>
+                            </div>
+                            <div class="summary-row summary-total">
+                                <span><strong>Total:</strong></span>
+                                <span><strong>₹<span id="sidebarTotal">0</span></strong></span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" form="checkoutForm" class="btn btn-primary btn-full" id="placeOrderBtn">
+                            🔒 Place Order Securely
+                        </button>
+                        
+                        <div class="security-badges">
+                            <div class="security-item">🔒 SSL Encrypted</div>
+                            <div class="security-item">🛡️ Secure Payment</div>
+                            <div class="security-item">💳 PayU Protected</div>
+                        </div>
+                        
+                        <div class="money-back-guarantee">
+                            <strong>💰 30-Day Money-Back Guarantee</strong>
+                            <p>Not satisfied? Get a full refund within 30 days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">🔍</span>
+                    <span class="footer-title">Shadow Market Tracker</span>
+                    <p class="footer-description">
+                        AI-powered business intelligence for the modern web
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="products.html">Products</a>
+                        <a href="index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Support</h4>
+                        <a href="index.html#contact">Contact</a>
+                        <a href="mailto:pranavdev.businessai@gmail.com">Help Center</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <a href="mailto:pranavdev.businessai@gmail.com">📧 pranavdev.businessai@gmail.com</a>
+                        <p class="footer-address">🏢 C-334, Malviya Nagar<br>Jaipur, Rajasthan 302017, India</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Shadow Market Tracker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/checkout.js"></script>
+</body>
+</html>

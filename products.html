@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products & Services - Shadow Market Tracker</title>
+    <meta name="description" content="Shadow Market Tracker subscription plans and services - AI-powered business intelligence">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">
+                    <span class="nav-logo">🔍</span>
+                    <span class="nav-title">Shadow Market Tracker</span>
+                </a>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="products.html" class="nav-link active">Products</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <div class="cart-icon" id="cartIcon">
+                    🛒 <span class="cart-count" id="cartCount">0</span>
+                </div>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Products Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Our <span class="text-accent">Products & Services</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Choose the perfect plan to transform your web browsing into powerful business intelligence
+                </p>
+                <div class="hero-powered">
+                    <span class="powered-text">⚡ Powered by 150+ APIs</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-bg-effect"></div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <!-- Chrome Extension Plans -->
+            <div class="product-category">
+                <h2 class="category-title">Chrome Extension Subscriptions</h2>
+                <p class="category-description">AI-powered business intelligence directly in your browser</p>
+                
+                <div class="products-grid">
+                    <!-- Starter Plan -->
+                    <div class="product-card" data-product="starter">
+                        <div class="product-image">
+                            <div class="product-icon">🚀</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Starter Plan</h3>
+                            <p class="product-description">Perfect for individual entrepreneurs and small business owners</p>
+                            <div class="product-price">
+                                <span class="price-currency">₹</span>
+                                <span class="price-amount">399</span>
+                                <span class="price-period">/month</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>✅ 100 page analyses per month</li>
+                                <li>✅ Basic market insights</li>
+                                <li>✅ Email support</li>
+                                <li>✅ Chrome extension access</li>
+                                <li>✅ 14-day free trial</li>
+                            </ul>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-plan="starter" data-price="399" data-title="Starter Plan">
+                                    Add to Cart
+                                </button>
+                                <button class="btn btn-secondary">Start Free Trial</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professional Plan -->
+                    <div class="product-card featured" data-product="professional">
+                        <div class="product-badge">Most Popular</div>
+                        <div class="product-image">
+                            <div class="product-icon">💼</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Professional Plan</h3>
+                            <p class="product-description">Ideal for growing businesses and marketing teams</p>
+                            <div class="product-price">
+                                <span class="price-currency">₹</span>
+                                <span class="price-amount">1599</span>
+                                <span class="price-period">/month</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>✅ Unlimited page analyses</li>
+                                <li>✅ Advanced AI insights</li>
+                                <li>✅ Real-time alerts</li>
+                                <li>✅ Priority support</li>
+                                <li>✅ Export capabilities</li>
+                                <li>✅ Custom reports</li>
+                            </ul>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-plan="professional" data-price="1599" data-title="Professional Plan">
+                                    Add to Cart
+                                </button>
+                                <button class="btn btn-secondary">Start Free Trial</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="product-card" data-product="enterprise">
+                        <div class="product-image">
+                            <div class="product-icon">🏢</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Enterprise Plan</h3>
+                            <p class="product-description">For large teams and organizations</p>
+                            <div class="product-price">
+                                <span class="price-currency">₹</span>
+                                <span class="price-amount">7999</span>
+                                <span class="price-period">/month</span>
+                            </div>
+                            <ul class="product-features">
+                                <li>✅ Everything in Professional</li>
+                                <li>✅ Team collaboration</li>
+                                <li>✅ API access</li>
+                                <li>✅ White-label options</li>
+                                <li>✅ Dedicated support</li>
+                                <li>✅ Custom integrations</li>
+                            </ul>
+                            <div class="product-actions">
+                                <button class="btn btn-primary add-to-cart" data-plan="enterprise" data-price="7999" data-title="Enterprise Plan">
+                                    Add to Cart
+                                </button>
+                                <button class="btn btn-secondary">Contact Sales</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Services -->
+            <div class="product-category">
+                <h2 class="category-title">Professional Services</h2>
+                <p class="category-description">Custom solutions and consulting services</p>
+                
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">🔧</div>
+                        <h3>Custom Integration</h3>
+                        <p>Integrate Shadow Market Tracker with your existing business tools and workflows</p>
+                        <div class="service-price">Starting at ₹25,000</div>
+                        <button class="btn btn-outline add-to-cart" data-plan="custom-integration" data-price="25000" data-title="Custom Integration Service">
+                            Add to Cart
+                        </button>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">📊</div>
+                        <h3>Business Intelligence Consulting</h3>
+                        <p>Expert consultation on market analysis and competitive intelligence strategies</p>
+                        <div class="service-price">₹5,000/hour</div>
+                        <button class="btn btn-outline add-to-cart" data-plan="bi-consulting" data-price="5000" data-title="BI Consulting (1 hour)">
+                            Add to Cart
+                        </button>
+                    </div>
+                    
+                    <div class="service-card">
+                        <div class="service-icon">🎓</div>
+                        <h3>Training & Onboarding</h3>
+                        <p>Comprehensive training for your team on maximizing Shadow Market Tracker</p>
+                        <div class="service-price">₹15,000/session</div>
+                        <button class="btn btn-outline add-to-cart" data-plan="training" data-price="15000" data-title="Training Session">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Comparison -->
+            <div class="comparison-section">
+                <h2 class="section-title">Feature Comparison</h2>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Starter</th>
+                                <th>Professional</th>
+                                <th>Enterprise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Page Analyses</td>
+                                <td>100/month</td>
+                                <td>Unlimited</td>
+                                <td>Unlimited</td>
+                            </tr>
+                            <tr>
+                                <td>AI Insights</td>
+                                <td>Basic</td>
+                                <td>Advanced</td>
+                                <td>Advanced</td>
+                            </tr>
+                            <tr>
+                                <td>Real-time Alerts</td>
+                                <td>❌</td>
+                                <td>✅</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>Team Collaboration</td>
+                                <td>❌</td>
+                                <td>❌</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>API Access</td>
+                                <td>❌</td>
+                                <td>❌</td>
+                                <td>✅</td>
+                            </tr>
+                            <tr>
+                                <td>Support</td>
+                                <td>Email</td>
+                                <td>Priority</td>
+                                <td>Dedicated</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="cart-close" id="cartClose">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p class="empty-cart">Your cart is empty</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: ₹<span id="cartTotal">0</span></strong>
+            </div>
+            <button class="btn btn-primary btn-full" id="checkoutBtn" disabled onclick="window.location.href='checkout.html'">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">🔍</span>
+                    <span class="footer-title">Shadow Market Tracker</span>
+                    <p class="footer-description">
+                        AI-powered business intelligence for the modern web
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="products.html">Products</a>
+                        <a href="index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Support</h4>
+                        <a href="index.html#contact">Contact</a>
+                        <a href="mailto:pranavdev.businessai@gmail.com">Help Center</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <a href="mailto:pranavdev.businessai@gmail.com">📧 pranavdev.businessai@gmail.com</a>
+                        <p class="footer-address">🏢 C-334, Malviya Nagar<br>Jaipur, Rajasthan 302017, India</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Shadow Market Tracker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/cart.js"></script>
+</body>
+</html>
