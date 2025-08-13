@@ -137,12 +137,61 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
     
+    // Chrome Web Store link management
+    const chromeStoreUrl = 'https://chrome.google.com/webstore/detail/shadow-market-tracker/'; // Will be updated with actual ID
+    const isExtensionLive = false; // Set to true when extension is published
+
+    // Handle extension download buttons
+    const extensionButtons = document.querySelectorAll('#getExtensionBtn, #heroGetExtensionBtn');
+    extensionButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isExtensionLive) {
+                window.open(chromeStoreUrl, '_blank');
+            } else {
+                // Show coming soon modal
+                showComingSoonModal();
+            }
+        });
+    });
+
+    function showComingSoonModal() {
+        const modal = document.createElement('div');
+        modal.className = 'coming-soon-modal';
+        modal.innerHTML = `
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <h2>🚀 Extension Launching Soon!</h2>
+                    <p>Shadow Market Tracker is currently being reviewed by the Chrome Web Store team.</p>
+                    <p>We'll notify you as soon as it's available for download!</p>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" onclick="this.closest('.coming-soon-modal').remove()">
+                            Got it!
+                        </button>
+                        <a href="products.html" class="btn btn-secondary">
+                            View Pricing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (modal.parentNode) {
+                modal.remove();
+            }
+        }, 5000);
+    }
+
     // Console easter egg
     console.log(`
     🔍 Shadow Market Tracker
     ========================
     Cyberpunk Business Intelligence
-    
+
+    Extension Status: ${isExtensionLive ? 'LIVE' : 'LAUNCHING SOON'}
     Interested in the code? Check out our GitHub!
     Built with ❤️ and neon purple.
     `);
