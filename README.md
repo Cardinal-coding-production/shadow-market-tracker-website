@@ -77,7 +77,7 @@ Before deployment, update:
 
 This landing page is specifically designed to meet requirements for:
 - **Stripe**: Clear pricing, terms, and privacy policy
-- **Cashfree**: Transparent subscription model
+- **PayU**: Transparent subscription model
 - **Paddle**: Professional presentation with legal pages
 
 ## 🔗 Key Sections

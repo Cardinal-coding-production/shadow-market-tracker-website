@@ -156,7 +156,7 @@ Add to `<head>` section for enhanced security:
 
 ### Approval Tips
 1. **Stripe**: Ensure pricing is clear and terms are comprehensive
-2. **Cashfree**: Include detailed privacy policy and data handling
+2. **PayU**: Include detailed privacy policy and data handling
 3. **Paddle**: Professional presentation and clear subscription terms
 
 ## 🔄 Maintenance
