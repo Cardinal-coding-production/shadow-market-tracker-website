@@ -166,7 +166,7 @@
                         <h3 class="pricing-title">Starter</h3>
                         <div class="pricing-price">
                             <span class="price-currency">₹</span>
-                            <span class="price-amount">60</span>
+                            <span class="price-amount">1</span>
                             <span class="price-period">/month</span>
                         </div>
                         <p class="pricing-description">Perfect for individual entrepreneurs</p>
@@ -178,7 +178,7 @@
                         <li>✅ Chrome extension access</li>
                     </ul>
                     <button id="rzp-starter" class="btn btn-secondary btn-full">
-                        Start Free Trial - ₹60/month
+                        Start Free Trial - ₹1/month
                     </button>
                 </div>
                 <div class="pricing-card pricing-featured">
@@ -420,10 +420,10 @@
 
         // Payment button event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Starter Plan - ₹60/month
+            // Starter Plan - ₹1/month
             document.getElementById('rzp-starter').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('Starter Plan', 6000, 'Starter Plan - ₹60/month subscription');
+                initiatePayment('Starter Plan', 100, 'Starter Plan - ₹1/month subscription');
             };
 
             // Professional Plan - ₹449/month
