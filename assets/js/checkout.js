@@ -270,8 +270,8 @@ class Checkout {
         // Simulate payment processing delay
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        // In a real implementation, this would integrate with PayU API
-        console.log('Processing payment with PayU:', orderData);
+        // In a real implementation, this would integrate with Razorpay API
+        console.log('Processing payment with Razorpay:', orderData);
 
         // Save order data
         localStorage.setItem('lastOrder', JSON.stringify(orderData));

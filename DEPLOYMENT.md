@@ -155,9 +155,9 @@ Add to `<head>` section for enhanced security:
 - ✅ Mobile-responsive layout
 
 ### Approval Tips
-1. **Stripe**: Ensure pricing is clear and terms are comprehensive
-2. **PayU**: Include detailed privacy policy and data handling
-3. **Paddle**: Professional presentation and clear subscription terms
+1. **Razorpay**: Ensure pricing is clear, terms are comprehensive, and include detailed privacy policy for data handling
+2. **Professional presentation**: Clear subscription terms and transparent pricing
+3. **Compliance**: All legal pages and contact information properly displayed
 
 ## 🔄 Maintenance
 

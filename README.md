@@ -76,9 +76,9 @@ Before deployment, update:
 ## 🎯 Payment Processor Compliance
 
 This landing page is specifically designed to meet requirements for:
-- **Stripe**: Clear pricing, terms, and privacy policy
-- **PayU**: Transparent subscription model
-- **Paddle**: Professional presentation with legal pages
+- **Razorpay**: Clear pricing, terms, and privacy policy
+- **Transparent subscription model**: All plans clearly displayed
+- **Professional presentation**: Complete legal pages and contact information
 
 ## 🔗 Key Sections
 
