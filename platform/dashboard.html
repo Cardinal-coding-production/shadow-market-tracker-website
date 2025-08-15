@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bot Platform Dashboard - Shadow Market Tracker</title>
+    <meta name="description" content="Manage your AI bots, view alerts, and monitor market intelligence from your centralized dashboard.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="../index.html" class="logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Shadow Market Tracker</span>
+                </a>
+            </div>
+            <div class="header-center">
+                <h1 class="dashboard-title">AI Bot Platform</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-menu">
+                    <button class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="#" class="dropdown-item">Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="#" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Sidebar -->
+    <aside class="dashboard-sidebar">
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-robot"></i>
+                <span>AI Bots</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <!-- Dashboard Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">3</h3>
+                        <p class="stat-label">Active Bots</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">24</h3>
+                        <p class="stat-label">Alerts Today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">12</h3>
+                        <p class="stat-label">Opportunities</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">8</h3>
+                        <p class="stat-label">Tenders</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bot Status Cards -->
+            <div class="section">
+                <h2 class="section-title">AI Bot Status</h2>
+                <div class="bots-grid">
+                    <div class="bot-status-card">
+                        <div class="bot-header">
+                            <div class="bot-icon competitive">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="bot-info">
+                                <h3 class="bot-name">Competitive News Bot</h3>
+                                <span class="bot-status running">Running</span>
+                            </div>
+                            <div class="bot-actions">
+                                <button class="btn-icon" title="Configure">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <button class="btn-icon" title="View Alerts">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bot-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Last Run</span>
+                                <span class="metric-value">2 hours ago</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Alerts Generated</span>
+                                <span class="metric-value">15</span>
+                            </div>
+                        </div>
+                        <div class="bot-description">
+                            Monitoring competitor websites for pricing changes, feature launches, and market movements.
+                        </div>
+                    </div>
+
+                    <div class="bot-status-card">
+                        <div class="bot-header">
+                            <div class="bot-icon gap-finder">
+                                <i class="fas fa-search-dollar"></i>
+                            </div>
+                            <div class="bot-info">
+                                <h3 class="bot-name">Gap Finder Bot</h3>
+                                <span class="bot-status running">Running</span>
+                            </div>
+                            <div class="bot-actions">
+                                <button class="btn-icon" title="Configure">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <button class="btn-icon" title="View Opportunities">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bot-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Last Analysis</span>
+                                <span class="metric-value">6 hours ago</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Opportunities Found</span>
+                                <span class="metric-value">12</span>
+                            </div>
+                        </div>
+                        <div class="bot-description">
+                            Analyzing 150+ data sources to identify underserved market opportunities and profitable niches.
+                        </div>
+                    </div>
+
+                    <div class="bot-status-card">
+                        <div class="bot-header">
+                            <div class="bot-icon tender">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="bot-info">
+                                <h3 class="bot-name">Tender & RFP Alert Bot</h3>
+                                <span class="bot-status running">Running</span>
+                            </div>
+                            <div class="bot-actions">
+                                <button class="btn-icon" title="Configure">
+                                    <i class="fas fa-cog"></i>
+                                </button>
+                                <button class="btn-icon" title="View Tenders">
+                                    <i class="fas fa-file-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bot-metrics">
+                            <div class="metric">
+                                <span class="metric-label">Last Scan</span>
+                                <span class="metric-value">30 minutes ago</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Relevant Tenders</span>
+                                <span class="metric-value">8</span>
+                            </div>
+                        </div>
+                        <div class="bot-description">
+                            Scanning government and private tenders, filtering by relevance and calculating winning probability.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Alerts -->
+            <div class="section">
+                <h2 class="section-title">Recent Alerts</h2>
+                <div class="alerts-container">
+                    <div class="alert-item high">
+                        <div class="alert-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4 class="alert-title">Competitor Price Drop Detected</h4>
+                            <p class="alert-description">TechCorp reduced their premium plan pricing by 25%</p>
+                            <span class="alert-time">2 hours ago</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="btn btn-sm">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="alert-item medium">
+                        <div class="alert-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4 class="alert-title">Market Gap Opportunity</h4>
+                            <p class="alert-description">High-demand niche identified in B2B automation tools</p>
+                            <span class="alert-time">4 hours ago</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="btn btn-sm">Explore</button>
+                        </div>
+                    </div>
+
+                    <div class="alert-item low">
+                        <div class="alert-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="alert-content">
+                            <h4 class="alert-title">New Government Tender</h4>
+                            <p class="alert-description">$2M software development tender matching your criteria</p>
+                            <span class="alert-time">6 hours ago</span>
+                        </div>
+                        <div class="alert-actions">
+                            <button class="btn btn-sm">Review</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dashboard Scripts -->
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>
