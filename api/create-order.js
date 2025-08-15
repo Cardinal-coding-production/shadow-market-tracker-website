@@ -31,7 +31,9 @@ export default async function handler(req, res) {
       amount: amount, // amount in paise
       currency: currency,
       receipt: receipt || `receipt_${Date.now()}`,
-      notes: notes || {}
+      notes: notes || {},
+      payment_capture: 1, // Auto-capture payment (prevents refund)
+      partial_payment: false // Disable partial payments
     };
 
     const order = await razorpay.orders.create(options);

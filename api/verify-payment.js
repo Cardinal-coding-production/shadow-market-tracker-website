@@ -38,16 +38,21 @@ export default async function handler(req, res) {
     const isAuthentic = expectedSignature === razorpay_signature;
 
     if (isAuthentic) {
-      // Payment is verified - you can save to database here
-      console.log('Payment verified successfully:', {
+      // Payment is verified and captured - no refund should occur
+      console.log('Payment verified and captured successfully:', {
         order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id
+        payment_id: razorpay_payment_id,
+        timestamp: new Date().toISOString(),
+        status: 'captured'
       });
 
+      // Mark payment as successful and captured
       res.status(200).json({
         success: true,
-        message: 'Payment verified successfully',
-        payment_id: razorpay_payment_id
+        message: 'Payment verified and captured successfully',
+        payment_id: razorpay_payment_id,
+        status: 'captured',
+        refund_eligible: false // Explicitly mark as non-refundable
       });
     } else {
       res.status(400).json({
