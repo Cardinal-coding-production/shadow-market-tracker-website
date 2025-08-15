@@ -320,47 +320,102 @@
     <!-- Razorpay Integration -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        // Razorpay payment configuration
-        function initiatePayment(planName, amount, description) {
-            var options = {
-                "key": "rzp_live_R5bUcfPrk6LOKC", // Live Razorpay Key ID
-                "amount": amount, // Amount in paise (multiply by 100)
-                "currency": "INR",
-                "name": "STM",
-                "description": description,
-                "image": "https://shadow-market-tracker-website.vercel.app/assets/img/logo.png",
-                "prefill": {
-                    "name": "",
-                    "email": "",
-                    "contact": ""
-                },
-                "notes": {
-                    "plan": planName
-                },
-                "theme": {
-                    "color": "#8b5cf6"
-                },
-                "handler": function (response) {
-                    // Payment successful - redirect to success page with payment details
-                    var successUrl = "payment-success.html" +
-                        "?razorpay_payment_id=" + response.razorpay_payment_id +
-                        "&razorpay_order_id=" + (response.razorpay_order_id || 'N/A') +
-                        "&razorpay_signature=" + (response.razorpay_signature || 'N/A') +
-                        "&plan=" + encodeURIComponent(planName) +
-                        "&amount=" + (amount/100);
+        // Razorpay payment configuration with proper order creation
+        async function initiatePayment(planName, amount, description) {
+            try {
+                // First create order on backend
+                const orderResponse = await fetch('/api/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: amount,
+                        currency: 'INR',
+                        receipt: `receipt_${planName}_${Date.now()}`,
+                        notes: {
+                            plan: planName,
+                            description: description
+                        }
+                    })
+                });
 
-                    window.location.href = successUrl;
-                },
-                "modal": {
-                    "ondismiss": function() {
-                        // Payment cancelled or failed
-                        console.log('Payment cancelled by user');
-                    }
+                const orderData = await orderResponse.json();
+
+                if (!orderData.success) {
+                    throw new Error('Failed to create order');
                 }
-            };
 
-            var rzp = new Razorpay(options);
-            rzp.open();
+                var options = {
+                    "key": "rzp_test_R5bUcfPrk6LOKC", // Test Razorpay Key ID - Change to rzp_live_ when backend is ready
+                    "amount": amount, // Amount in paise (multiply by 100)
+                    "currency": "INR",
+                    "name": "STM",
+                    "description": description,
+                    "order_id": orderData.order_id, // This is crucial for live payments
+                    "image": "https://shadow-market-tracker-website.vercel.app/assets/img/logo.png",
+                    "prefill": {
+                        "name": "",
+                        "email": "",
+                        "contact": ""
+                    },
+                    "notes": {
+                        "plan": planName
+                    },
+                    "theme": {
+                        "color": "#8b5cf6"
+                    },
+                    "handler": async function (response) {
+                        // Verify payment on backend
+                        try {
+                            const verifyResponse = await fetch('/api/verify-payment', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+
+                            const verifyData = await verifyResponse.json();
+
+                            if (verifyData.success) {
+                                // Payment verified - redirect to success page
+                                var successUrl = "payment-success.html" +
+                                    "?razorpay_payment_id=" + response.razorpay_payment_id +
+                                    "&razorpay_order_id=" + response.razorpay_order_id +
+                                    "&razorpay_signature=" + response.razorpay_signature +
+                                    "&plan=" + encodeURIComponent(planName) +
+                                    "&amount=" + (amount/100) +
+                                    "&verified=true";
+
+                                window.location.href = successUrl;
+                            } else {
+                                alert('Payment verification failed. Please contact support.');
+                            }
+                        } catch (error) {
+                            console.error('Payment verification error:', error);
+                            alert('Payment verification failed. Please contact support.');
+                        }
+                    },
+                    "modal": {
+                        "ondismiss": function() {
+                            // Payment cancelled or failed
+                            console.log('Payment cancelled by user');
+                        }
+                    }
+                };
+
+                var rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (error) {
+                console.error('Payment initiation error:', error);
+                alert('Failed to initiate payment. Please try again.');
+            }
         }
 
         // Payment button event listeners
