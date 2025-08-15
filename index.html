@@ -329,7 +329,6 @@
                 "name": "Shadow Market Tracker",
                 "description": description,
                 "image": "https://shadow-market-tracker-website.vercel.app/assets/img/logo.png",
-                "callback_url": "https://shadow-market-tracker-website.vercel.app/payment-success.html",
                 "prefill": {
                     "name": "",
                     "email": "",
@@ -340,6 +339,23 @@
                 },
                 "theme": {
                     "color": "#8b5cf6"
+                },
+                "handler": function (response) {
+                    // Payment successful - redirect to success page with payment details
+                    var successUrl = "payment-success.html" +
+                        "?razorpay_payment_id=" + response.razorpay_payment_id +
+                        "&razorpay_order_id=" + (response.razorpay_order_id || 'N/A') +
+                        "&razorpay_signature=" + (response.razorpay_signature || 'N/A') +
+                        "&plan=" + encodeURIComponent(planName) +
+                        "&amount=" + (amount/100);
+
+                    window.location.href = successUrl;
+                },
+                "modal": {
+                    "ondismiss": function() {
+                        // Payment cancelled or failed
+                        console.log('Payment cancelled by user');
+                    }
                 }
             };
 

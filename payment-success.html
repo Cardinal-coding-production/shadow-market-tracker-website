@@ -95,17 +95,27 @@
         // Extract payment details from URL parameters
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            
+
             // Get payment details from URL parameters
             const paymentId = urlParams.get('razorpay_payment_id') || 'N/A';
             const orderId = urlParams.get('razorpay_order_id') || 'N/A';
             const signature = urlParams.get('razorpay_signature') || 'N/A';
-            
+            const planName = urlParams.get('plan') || 'N/A';
+            const amount = urlParams.get('amount') || 'N/A';
+
             // Update the display
             document.getElementById('transactionId').textContent = paymentId;
-            
-            // You can add more logic here to fetch plan details based on the payment
-            // For now, we'll show generic success message
+            document.getElementById('planName').textContent = planName;
+            document.getElementById('amount').textContent = amount !== 'N/A' ? '₹' + amount : 'N/A';
+
+            // Store payment details for future reference
+            console.log('Payment Details:', {
+                paymentId: paymentId,
+                orderId: orderId,
+                signature: signature,
+                plan: planName,
+                amount: amount
+            });
         });
     </script>
 </body>
