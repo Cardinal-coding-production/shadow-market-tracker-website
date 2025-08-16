@@ -6,7 +6,7 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -18,6 +18,20 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Debug logging
+  console.log('API called with method:', req.method);
+  console.log('Environment check - Key ID exists:', !!process.env.RAZORPAY_KEY_ID);
+  console.log('Environment check - Key Secret exists:', !!process.env.RAZORPAY_KEY_SECRET);
+
+  // Check if Razorpay credentials are available
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    console.error('Missing Razorpay credentials');
+    return res.status(500).json({
+      success: false,
+      error: 'Payment service configuration error. Please contact support.'
+    });
   }
 
   try {

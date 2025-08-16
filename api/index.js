@@ -1,5 +1,5 @@
 // Simple API endpoint for Vercel deployment
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
   // Check if Razorpay environment variables are configured
   const razorpayConfigured = !!(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
 

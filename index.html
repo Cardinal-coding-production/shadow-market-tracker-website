@@ -404,6 +404,12 @@
             <div class="pricing-note">
                 <p>💳 All plans include a 7-day free trial. Cancel anytime. Annual billing available with 20% discount. Secure payments via Razorpay.</p>
             </div>
+            <!-- Temporary API Test Button -->
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="testAPI()" style="background: #ff6b6b; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 14px;">
+                    🔧 Test API Connection
+                </button>
+            </div>
         </div>
     </section>
 
@@ -494,6 +500,19 @@
     <!-- Razorpay Integration -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
+        // Test API function
+        async function testAPI() {
+            try {
+                const response = await fetch('/api/test');
+                const data = await response.json();
+                console.log('API Test Result:', data);
+                alert('API Test: ' + (data.success ? 'SUCCESS' : 'FAILED') + '\nCheck console for details');
+            } catch (error) {
+                console.error('API Test Error:', error);
+                alert('API Test FAILED: ' + error.message);
+            }
+        }
+
         // Razorpay payment configuration with proper order creation
         async function initiatePayment(planName, amount, description) {
             try {
@@ -592,7 +611,18 @@
 
             } catch (error) {
                 console.error('Payment initiation error:', error);
-                alert('Failed to initiate payment. Please try again.');
+
+                // More detailed error message
+                let errorMessage = 'Failed to initiate payment. ';
+                if (error.message.includes('Failed to create order')) {
+                    errorMessage += 'Server error - please contact support.';
+                } else if (error.message.includes('fetch')) {
+                    errorMessage += 'Network error - please check your connection.';
+                } else {
+                    errorMessage += 'Please try again or contact support.';
+                }
+
+                alert(errorMessage);
             }
         }
 
