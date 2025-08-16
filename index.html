@@ -497,6 +497,8 @@
         // Razorpay payment configuration with proper order creation
         async function initiatePayment(planName, amount, description) {
             try {
+                console.log('Initiating payment for:', planName, 'Amount:', amount);
+
                 // First create order on backend
                 const orderResponse = await fetch('/api/create-order', {
                     method: 'POST',
@@ -514,10 +516,12 @@
                     })
                 });
 
+                console.log('Order response status:', orderResponse.status);
                 const orderData = await orderResponse.json();
+                console.log('Order data:', orderData);
 
                 if (!orderData.success) {
-                    throw new Error('Failed to create order');
+                    throw new Error('Failed to create order: ' + (orderData.error || orderData.message || 'Unknown error'));
                 }
 
                 var options = {
@@ -597,18 +601,21 @@
             // Starter Plan - ₹699/month
             document.getElementById('rzp-starter').onclick = function(e) {
                 e.preventDefault();
+                console.log('Starter plan clicked');
                 initiatePayment('AI Bot Platform - Starter', 69900, 'Starter Plan - ₹699/month - 1 AI Bot + Dashboard Access + 1,000 alerts/month');
             };
 
             // Professional Plan - ₹5,999/month
             document.getElementById('rzp-professional').onclick = function(e) {
                 e.preventDefault();
+                console.log('Professional plan clicked');
                 initiatePayment('AI Bot Platform - Professional', 599900, 'Professional Plan - ₹5,999/month - All 3 AI Bots + Advanced Features + 10,000 alerts/month');
             };
 
             // Enterprise Plan - ₹29,999/month
             document.getElementById('rzp-enterprise').onclick = function(e) {
                 e.preventDefault();
+                console.log('Enterprise plan clicked');
                 initiatePayment('AI Bot Platform - Enterprise', 2999900, 'Enterprise Plan - ₹29,999/month - Full Platform + API Access + Unlimited alerts');
             };
 
