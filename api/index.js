@@ -20,7 +20,7 @@ module.exports = async function handler(req, res) {
       const razorpayConfigured = !!(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
 
       return res.status(200).json({
-        message: 'Shadow Market Tracker API is running - UPDATED',
+        message: 'Shadow Market Tracker API is running - FORCE UPDATE',
         platform: 'AI Bot Platform',
         bots: ['competitive_news', 'gap_finder', 'tender_rfp'],
         payment_gateway: {
