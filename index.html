@@ -503,10 +503,10 @@
         // Test API function
         async function testAPI() {
             try {
-                const response = await fetch('/api/');
+                const response = await fetch('/api/?action=test');
                 const data = await response.json();
                 console.log('API Test Result:', data);
-                alert('API Test: SUCCESS\nRazorpay Configured: ' + (data.payment_gateway.razorpay_configured ? 'YES' : 'NO') + '\nCheck console for details');
+                alert('API Test: ' + (data.success ? 'SUCCESS' : 'FAILED') + '\nRazorpay Configured: ' + (data.environment.hasRazorpayKeyId ? 'YES' : 'NO') + '\nCheck console for details');
             } catch (error) {
                 console.error('API Test Error:', error);
                 alert('API Test FAILED: ' + error.message);
@@ -519,7 +519,7 @@
                 console.log('Initiating payment for:', planName, 'Amount:', amount);
 
                 // First create order on backend
-                const orderResponse = await fetch('/api/create-order', {
+                const orderResponse = await fetch('/api/?action=create-order', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -565,7 +565,7 @@
                     "handler": async function (response) {
                         // Verify payment on backend
                         try {
-                            const verifyResponse = await fetch('/api/verify-payment', {
+                            const verifyResponse = await fetch('/api/?action=verify-payment', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
