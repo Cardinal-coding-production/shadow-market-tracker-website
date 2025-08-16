@@ -1,7 +1,6 @@
-// Vercel serverless function for Razorpay payment verification
 const crypto = require('crypto');
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -16,15 +15,12 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { 
-      razorpay_order_id, 
-      razorpay_payment_id, 
-      razorpay_signature 
-    } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({ 
-        error: 'Missing required payment parameters' 
+        success: false, 
+        error: 'Missing required payment details' 
       });
     }
 
@@ -35,37 +31,30 @@ module.exports = async function handler(req, res) {
       .update(body.toString())
       .digest('hex');
 
+    // Verify signature
     const isAuthentic = expectedSignature === razorpay_signature;
 
     if (isAuthentic) {
-      // Payment is verified and captured - no refund should occur
-      console.log('Payment verified and captured successfully:', {
-        order_id: razorpay_order_id,
-        payment_id: razorpay_payment_id,
-        timestamp: new Date().toISOString(),
-        status: 'captured'
-      });
-
-      // Mark payment as successful and captured
+      // Payment is verified
       res.status(200).json({
         success: true,
-        message: 'Payment verified and captured successfully',
+        message: 'Payment verified successfully',
         payment_id: razorpay_payment_id,
-        status: 'captured',
-        refund_eligible: false // Explicitly mark as non-refundable
+        order_id: razorpay_order_id
       });
     } else {
       res.status(400).json({
         success: false,
-        message: 'Payment verification failed'
+        error: 'Payment verification failed'
       });
     }
 
   } catch (error) {
-    console.error('Payment verification error:', error);
+    console.error('Error verifying payment:', error);
     res.status(500).json({ 
+      success: false, 
       error: 'Payment verification failed',
-      message: error.message 
+      details: error.message 
     });
   }
 }

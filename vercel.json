@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/order.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/verify.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "RAZORPAY_KEY_ID": "@razorpay_key_id",
+    "RAZORPAY_KEY_SECRET": "@razorpay_key_secret"
+  }
+}

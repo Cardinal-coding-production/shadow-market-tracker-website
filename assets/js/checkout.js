@@ -1,314 +1,220 @@
-// Checkout Functionality
-class Checkout {
+// Checkout functionality
+class CheckoutManager {
     constructor() {
-        this.checkoutData = JSON.parse(localStorage.getItem('checkoutData'));
+        this.cart = this.getCartFromStorage();
         this.init();
     }
 
     init() {
-        if (!this.checkoutData || !this.checkoutData.items || this.checkoutData.items.length === 0) {
-            this.redirectToProducts();
+        this.loadCartItems();
+        this.calculateTotals();
+        this.setupEventListeners();
+        this.loadRazorpayScript();
+    }
+
+    getCartFromStorage() {
+        const cart = localStorage.getItem('cart');
+        return cart ? JSON.parse(cart) : [];
+    }
+
+    loadCartItems() {
+        const checkoutItems = document.getElementById('checkoutItems');
+        const sidebarItems = document.getElementById('sidebarItems');
+
+        if (this.cart.length === 0) {
+            checkoutItems.innerHTML = '<p>No items in cart. <a href="products.html">Browse products</a></p>';
+            sidebarItems.innerHTML = '<p>No items</p>';
             return;
         }
 
-        this.renderOrderSummary();
-        this.bindEvents();
-        this.setupFormValidation();
+        let itemsHTML = '';
+        let sidebarHTML = '';
+
+        this.cart.forEach(item => {
+            itemsHTML += `
+                <div class="order-item">
+                    <div class="item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                    </div>
+                    <div class="item-price">₹${item.price.toLocaleString()}</div>
+                </div>
+            `;
+
+            sidebarHTML += `
+                <div class="summary-item">
+                    <span>${item.name}</span>
+                    <span>₹${item.price.toLocaleString()}</span>
+                </div>
+            `;
+        });
+
+        checkoutItems.innerHTML = itemsHTML;
+        sidebarItems.innerHTML = sidebarHTML;
     }
 
-    redirectToProducts() {
-        alert('No items in cart. Redirecting to products page.');
-        window.location.href = 'products.html';
-    }
-
-    renderOrderSummary() {
-        const items = this.checkoutData.items;
-        const subtotal = this.checkoutData.total;
+    calculateTotals() {
+        const subtotal = this.cart.reduce((sum, item) => sum + item.price, 0);
         const gst = Math.round(subtotal * 0.18);
         const total = subtotal + gst;
 
-        // Render main order items
-        const checkoutItems = document.getElementById('checkoutItems');
-        if (checkoutItems) {
-            checkoutItems.innerHTML = items.map(item => `
-                <div class="order-item">
-                    <div class="item-details">
-                        <h4>${item.title}</h4>
-                        <p class="item-meta">Quantity: ${item.quantity}</p>
-                    </div>
-                    <div class="item-price">₹${(item.price * item.quantity).toLocaleString()}</div>
-                </div>
-            `).join('');
-        }
+        // Update main checkout totals
+        document.getElementById('subtotal').textContent = subtotal.toLocaleString();
+        document.getElementById('gst').textContent = gst.toLocaleString();
+        document.getElementById('finalTotal').textContent = total.toLocaleString();
 
-        // Render sidebar items
-        const sidebarItems = document.getElementById('sidebarItems');
-        if (sidebarItems) {
-            sidebarItems.innerHTML = items.map(item => `
-                <div class="summary-item">
-                    <span>${item.title} (${item.quantity}x)</span>
-                    <span>₹${(item.price * item.quantity).toLocaleString()}</span>
-                </div>
-            `).join('');
-        }
+        // Update sidebar totals
+        document.getElementById('sidebarSubtotal').textContent = subtotal.toLocaleString();
+        document.getElementById('sidebarGst').textContent = gst.toLocaleString();
+        document.getElementById('sidebarTotal').textContent = total.toLocaleString();
 
-        // Update totals
-        this.updateTotals(subtotal, gst, total);
+        this.totalAmount = total;
     }
 
-    updateTotals(subtotal, gst, total) {
-        const elements = [
-            { id: 'subtotal', value: subtotal },
-            { id: 'gst', value: gst },
-            { id: 'finalTotal', value: total },
-            { id: 'sidebarSubtotal', value: subtotal },
-            { id: 'sidebarGst', value: gst },
-            { id: 'sidebarTotal', value: total }
-        ];
-
-        elements.forEach(({ id, value }) => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.textContent = value.toLocaleString();
-            }
+    setupEventListeners() {
+        const form = document.getElementById('checkoutForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.processPayment();
         });
     }
 
-    bindEvents() {
-        const checkoutForm = document.getElementById('checkoutForm');
-        if (checkoutForm) {
-            checkoutForm.addEventListener('submit', (e) => this.handleSubmit(e));
-        }
-
-        // Auto-fill country-specific fields
-        const countrySelect = document.getElementById('country');
-        if (countrySelect) {
-            countrySelect.addEventListener('change', (e) => this.handleCountryChange(e));
-        }
-    }
-
-    setupFormValidation() {
-        const requiredFields = document.querySelectorAll('input[required], select[required]');
-        
-        requiredFields.forEach(field => {
-            field.addEventListener('blur', () => this.validateField(field));
-            field.addEventListener('input', () => this.clearFieldError(field));
+    loadRazorpayScript() {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.onload = resolve;
+            document.head.appendChild(script);
         });
-
-        // Email validation
-        const emailField = document.getElementById('email');
-        if (emailField) {
-            emailField.addEventListener('blur', () => this.validateEmail(emailField));
-        }
-
-        // Phone validation
-        const phoneField = document.getElementById('phone');
-        if (phoneField) {
-            phoneField.addEventListener('input', (e) => this.formatPhone(e));
-        }
-
-        // PIN code validation
-        const pincodeField = document.getElementById('pincode');
-        if (pincodeField) {
-            pincodeField.addEventListener('input', (e) => this.validatePincode(e));
-        }
     }
 
-    validateField(field) {
-        const value = field.value.trim();
-        const isValid = value.length > 0;
+    async processPayment() {
+        const form = document.getElementById('checkoutForm');
+        const formData = new FormData(form);
+        const agreeTerms = document.getElementById('agreeTerms').checked;
 
-        if (!isValid) {
-            this.showFieldError(field, 'This field is required');
-        } else {
-            this.clearFieldError(field);
-        }
-
-        return isValid;
-    }
-
-    validateEmail(field) {
-        const email = field.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isValid = emailRegex.test(email);
-
-        if (!isValid && email.length > 0) {
-            this.showFieldError(field, 'Please enter a valid email address');
-        } else if (email.length === 0) {
-            this.showFieldError(field, 'Email is required');
-        } else {
-            this.clearFieldError(field);
-        }
-
-        return isValid;
-    }
-
-    formatPhone(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 10) {
-            value = value.substring(0, 10);
-        }
-        e.target.value = value;
-    }
-
-    validatePincode(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        if (value.length > 6) {
-            value = value.substring(0, 6);
-        }
-        e.target.value = value;
-    }
-
-    showFieldError(field, message) {
-        this.clearFieldError(field);
-        
-        field.classList.add('error');
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'field-error';
-        errorDiv.textContent = message;
-        field.parentNode.appendChild(errorDiv);
-    }
-
-    clearFieldError(field) {
-        field.classList.remove('error');
-        const existingError = field.parentNode.querySelector('.field-error');
-        if (existingError) {
-            existingError.remove();
-        }
-    }
-
-    handleCountryChange(e) {
-        const country = e.target.value;
-        const pincodeField = document.getElementById('pincode');
-        const pincodeLabel = document.querySelector('label[for="pincode"]');
-
-        if (country === 'IN') {
-            if (pincodeLabel) pincodeLabel.textContent = 'PIN Code *';
-            if (pincodeField) pincodeField.placeholder = '110001';
-        } else if (country === 'US') {
-            if (pincodeLabel) pincodeLabel.textContent = 'ZIP Code *';
-            if (pincodeField) pincodeField.placeholder = '10001';
-        } else {
-            if (pincodeLabel) pincodeLabel.textContent = 'Postal Code *';
-            if (pincodeField) pincodeField.placeholder = '';
-        }
-    }
-
-    validateForm() {
-        const requiredFields = document.querySelectorAll('input[required], select[required]');
-        const agreeTerms = document.getElementById('agreeTerms');
-        let isValid = true;
-
-        // Validate required fields
-        requiredFields.forEach(field => {
-            if (!this.validateField(field)) {
-                isValid = false;
-            }
-        });
-
-        // Validate email specifically
-        const emailField = document.getElementById('email');
-        if (emailField && !this.validateEmail(emailField)) {
-            isValid = false;
-        }
-
-        // Check terms agreement
-        if (agreeTerms && !agreeTerms.checked) {
-            alert('Please agree to the Terms of Service and Privacy Policy');
-            isValid = false;
-        }
-
-        return isValid;
-    }
-
-    async handleSubmit(e) {
-        e.preventDefault();
-
-        if (!this.validateForm()) {
+        if (!agreeTerms) {
+            alert('Please agree to the Terms of Service to continue.');
             return;
         }
 
-        const submitButton = document.getElementById('placeOrderBtn');
-        const originalText = submitButton.textContent;
-        
-        try {
-            // Show loading state
-            submitButton.disabled = true;
-            submitButton.innerHTML = '🔄 Processing Order...';
+        const customerData = {
+            firstName: formData.get('firstName'),
+            lastName: formData.get('lastName'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            company: formData.get('company'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            state: formData.get('state'),
+            pincode: formData.get('pincode'),
+            country: formData.get('country')
+        };
 
-            // Collect form data
-            const formData = new FormData(e.target);
-            const orderData = {
-                customer: Object.fromEntries(formData),
-                items: this.checkoutData.items,
-                totals: {
-                    subtotal: this.checkoutData.total,
-                    gst: Math.round(this.checkoutData.total * 0.18),
-                    total: this.checkoutData.total + Math.round(this.checkoutData.total * 0.18)
+        try {
+            // Show loading
+            const btn = document.getElementById('placeOrderBtn');
+            btn.innerHTML = '⏳ Processing...';
+            btn.disabled = true;
+
+            // Create order
+            const orderResponse = await fetch('/api/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-                paymentMethod: formData.get('paymentMethod'),
-                timestamp: Date.now()
+                body: JSON.stringify({
+                    amount: this.totalAmount,
+                    currency: 'INR',
+                    receipt: `receipt_${Date.now()}`,
+                    notes: {
+                        customer_name: `${customerData.firstName} ${customerData.lastName}`,
+                        customer_email: customerData.email,
+                        items: this.cart.map(item => item.name).join(', ')
+                    }
+                })
+            });
+
+            const orderData = await orderResponse.json();
+
+            if (!orderData.success) {
+                throw new Error(orderData.error || 'Failed to create order');
+            }
+
+            // Initialize Razorpay
+            const options = {
+                key: orderData.key_id,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: 'Shadow Market Tracker',
+                description: 'AI-powered business intelligence tools',
+                order_id: orderData.order_id,
+                prefill: {
+                    name: `${customerData.firstName} ${customerData.lastName}`,
+                    email: customerData.email,
+                    contact: customerData.phone
+                },
+                theme: {
+                    color: '#8B5CF6'
+                },
+                handler: (response) => {
+                    this.verifyPayment(response, customerData);
+                },
+                modal: {
+                    ondismiss: () => {
+                        btn.innerHTML = '🔒 Place Order Securely';
+                        btn.disabled = false;
+                    }
+                }
             };
 
-            // Simulate payment processing
-            await this.processPayment(orderData);
+            const rzp = new Razorpay(options);
+            rzp.open();
 
-            // Success - redirect to confirmation
-            this.showSuccessMessage();
-            
         } catch (error) {
-            console.error('Order processing error:', error);
-            alert('There was an error processing your order. Please try again.');
-        } finally {
+            console.error('Payment error:', error);
+            alert('Payment failed: ' + error.message);
+
             // Reset button
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
+            const btn = document.getElementById('placeOrderBtn');
+            btn.innerHTML = '🔒 Place Order Securely';
+            btn.disabled = false;
         }
     }
 
-    async processPayment(orderData) {
-        // Simulate payment processing delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
+    async verifyPayment(paymentResponse, customerData) {
+        try {
+            const verifyResponse = await fetch('/api/verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    razorpay_order_id: paymentResponse.razorpay_order_id,
+                    razorpay_payment_id: paymentResponse.razorpay_payment_id,
+                    razorpay_signature: paymentResponse.razorpay_signature
+                })
+            });
 
-        // In a real implementation, this would integrate with Razorpay API
-        console.log('Processing payment with Razorpay:', orderData);
+            const verifyData = await verifyResponse.json();
 
-        // Save order data
-        localStorage.setItem('lastOrder', JSON.stringify(orderData));
-        
-        // Clear cart
-        localStorage.removeItem('cart');
-        localStorage.removeItem('checkoutData');
+            if (verifyData.success) {
+                // Clear cart
+                localStorage.removeItem('cart');
 
-        return { success: true, transactionId: 'TXN' + Date.now() };
-    }
+                // Redirect to success page
+                window.location.href = `payment-success.html?payment_id=${paymentResponse.razorpay_payment_id}&order_id=${paymentResponse.razorpay_order_id}`;
+            } else {
+                throw new Error('Payment verification failed');
+            }
 
-    showSuccessMessage() {
-        // Create success overlay
-        const successOverlay = document.createElement('div');
-        successOverlay.className = 'success-overlay';
-        successOverlay.innerHTML = `
-            <div class="success-modal">
-                <div class="success-icon">✅</div>
-                <h2>Order Placed Successfully!</h2>
-                <p>Thank you for your purchase. You will receive a confirmation email shortly.</p>
-                <p>Your subscription will be activated within 24 hours.</p>
-                <button class="btn btn-primary" onclick="window.location.href='index.html'">
-                    Return to Home
-                </button>
-            </div>
-        `;
-
-        document.body.appendChild(successOverlay);
-
-        // Auto redirect after 5 seconds
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 5000);
-    }
+        } catch (error) {
+            console.error('Verification error:', error);
+            alert('Payment verification failed. Please contact support.');
+        }
 }
 
-// Initialize checkout when DOM is loaded
+// Initialize checkout when page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new Checkout();
+    new CheckoutManager();
 });

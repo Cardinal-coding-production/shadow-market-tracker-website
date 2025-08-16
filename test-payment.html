@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Payment - Shadow Market Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn {
+            background: #8B5CF6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .btn:hover {
+            background: #7C3AED;
+        }
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            background: #f8f9fa;
+            border-left: 4px solid #8B5CF6;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Payment Gateway Test</h1>
+        <p>Test the Razorpay integration with different amounts and scenarios.</p>
+        
+        <div>
+            <label for="testAmount">Test Amount (₹):</label>
+            <input type="number" id="testAmount" value="699" min="1">
+            
+            <label for="testEmail">Customer Email:</label>
+            <input type="email" id="testEmail" value="test@example.com">
+            
+            <label for="testPhone">Customer Phone:</label>
+            <input type="tel" id="testPhone" value="9876543210">
+            
+            <label for="testName">Customer Name:</label>
+            <input type="text" id="testName" value="Test Customer">
+        </div>
+        
+        <button class="btn" onclick="testCreateOrder()">1. Test Create Order</button>
+        <button class="btn" onclick="testPayment()">2. Test Full Payment Flow</button>
+        <button class="btn" onclick="addToCart()">3. Add Test Item to Cart</button>
+        <button class="btn" onclick="goToCheckout()">4. Go to Checkout</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        function showResult(message, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `result ${type}`;
+            resultDiv.innerHTML = message;
+        }
+
+        async function testCreateOrder() {
+            const amount = document.getElementById('testAmount').value;
+            
+            try {
+                showResult('Creating order...', 'info');
+                
+                const response = await fetch('/api/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: parseInt(amount),
+                        currency: 'INR',
+                        receipt: `test_receipt_${Date.now()}`,
+                        notes: {
+                            test: 'true',
+                            customer_name: document.getElementById('testName').value
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResult(`
+                        <strong>✅ Order Created Successfully!</strong><br>
+                        Order ID: ${data.order_id}<br>
+                        Amount: ₹${data.amount / 100}<br>
+                        Currency: ${data.currency}<br>
+                        Key ID: ${data.key_id}
+                    `, 'success');
+                } else {
+                    showResult(`❌ Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showResult(`❌ Network Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testPayment() {
+            const amount = document.getElementById('testAmount').value;
+            const email = document.getElementById('testEmail').value;
+            const phone = document.getElementById('testPhone').value;
+            const name = document.getElementById('testName').value;
+            
+            try {
+                showResult('Creating order for payment...', 'info');
+                
+                // Create order first
+                const orderResponse = await fetch('/api/order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: parseInt(amount),
+                        currency: 'INR',
+                        receipt: `test_payment_${Date.now()}`,
+                        notes: {
+                            test: 'true',
+                            customer_name: name,
+                            customer_email: email
+                        }
+                    })
+                });
+
+                const orderData = await orderResponse.json();
+                
+                if (!orderData.success) {
+                    throw new Error(orderData.error || 'Failed to create order');
+                }
+
+                showResult('Opening Razorpay checkout...', 'info');
+
+                // Initialize Razorpay
+                const options = {
+                    key: orderData.key_id,
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: 'Shadow Market Tracker',
+                    description: 'Test Payment',
+                    order_id: orderData.order_id,
+                    prefill: {
+                        name: name,
+                        email: email,
+                        contact: phone
+                    },
+                    theme: {
+                        color: '#8B5CF6'
+                    },
+                    handler: async function(response) {
+                        // Verify payment
+                        try {
+                            const verifyResponse = await fetch('/api/verify', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+
+                            const verifyData = await verifyResponse.json();
+
+                            if (verifyData.success) {
+                                showResult(`
+                                    <strong>🎉 Payment Successful!</strong><br>
+                                    Payment ID: ${response.razorpay_payment_id}<br>
+                                    Order ID: ${response.razorpay_order_id}<br>
+                                    Status: Verified ✅
+                                `, 'success');
+                            } else {
+                                showResult('❌ Payment verification failed', 'error');
+                            }
+                        } catch (error) {
+                            showResult(`❌ Verification error: ${error.message}`, 'error');
+                        }
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            showResult('Payment cancelled by user', 'info');
+                        }
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function addToCart() {
+            const testItem = {
+                id: 'test-item',
+                name: 'Test Product',
+                description: 'This is a test product for payment testing',
+                price: parseInt(document.getElementById('testAmount').value)
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            cart = cart.filter(item => item.id !== 'test-item'); // Remove existing test item
+            cart.push(testItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            showResult(`✅ Test item added to cart: ${testItem.name} - ₹${testItem.price}`, 'success');
+        }
+
+        function goToCheckout() {
+            window.location.href = 'checkout.html';
+        }
+    </script>
+</body>
+</html>
