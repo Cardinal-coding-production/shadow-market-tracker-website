@@ -1,0 +1,26 @@
+{
+  "name": "shadow-market-tracker-website",
+  "version": "1.0.0",
+  "description": "Shadow Market Tracker Landing Page with Razorpay Integration",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Build complete - static site'",
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "razorpay": "^2.9.2"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "keywords": [
+    "razorpay",
+    "payment",
+    "landing-page",
+    "business-intelligence"
+  ],
+  "author": "STM",
+  "license": "MIT"
+}
