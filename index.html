@@ -40,6 +40,7 @@
             <div class="nav-menu" id="navMenu">
                 <a href="about.html" class="nav-link">About</a>
                 <a href="products.html" class="nav-link">Products</a>
+                <a href="#extension" class="nav-link">Extension</a>
                 <a href="#ai-bots" class="nav-link">AI Bots</a>
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#pricing" class="nav-link">Pricing</a>
@@ -96,6 +97,108 @@
             </div>
         </div>
         <div class="hero-bg-effect"></div>
+    </section>
+
+    <!-- Chrome Extension Section -->
+    <section id="extension" class="extension-section">
+        <div class="container">
+            <div class="extension-content">
+                <div class="extension-text">
+                    <h2 class="section-title">Chrome Extension Coming Soon!</h2>
+                    <p class="section-subtitle">
+                        Get instant market intelligence while browsing any website. Our Chrome extension
+                        is currently under review by Google and will be available soon.
+                    </p>
+                    <div class="extension-features">
+                        <div class="feature-item">
+                            <i class="fas fa-bolt"></i>
+                            <span>Real-time webpage analysis</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Instant market insights</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Secure & privacy-focused</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-zap"></i>
+                            <span>One-click intelligence</span>
+                        </div>
+                    </div>
+                    <div class="extension-buttons">
+                        <button class="btn btn-primary btn-large" id="notify-extension">
+                            <i class="fas fa-bell"></i>
+                            Notify Me When Available
+                        </button>
+                        <a href="#ai-bots" class="btn btn-secondary btn-large">
+                            <i class="fas fa-robot"></i>
+                            Try AI Bots Now
+                        </a>
+                    </div>
+                    <div class="extension-status">
+                        <div class="status-item">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span>Submitted to Chrome Web Store</span>
+                        </div>
+                        <div class="status-item">
+                            <i class="fas fa-clock text-warning"></i>
+                            <span>Under Google Review</span>
+                        </div>
+                        <div class="status-item">
+                            <i class="fas fa-rocket text-info"></i>
+                            <span>Launch Expected Soon</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="extension-preview">
+                    <div class="browser-mockup">
+                        <div class="browser-header">
+                            <div class="browser-buttons">
+                                <span class="btn-close"></span>
+                                <span class="btn-minimize"></span>
+                                <span class="btn-maximize"></span>
+                            </div>
+                            <div class="browser-url">
+                                <i class="fas fa-lock"></i>
+                                <span>https://example.com</span>
+                            </div>
+                            <div class="extension-icon">
+                                <i class="fas fa-search" title="Shadow Market Tracker"></i>
+                            </div>
+                        </div>
+                        <div class="browser-content">
+                            <div class="extension-popup">
+                                <div class="popup-header">
+                                    <h4>Market Intelligence</h4>
+                                    <span class="popup-badge">AI Analysis</span>
+                                </div>
+                                <div class="popup-metrics">
+                                    <div class="metric">
+                                        <span class="metric-label">Market Size</span>
+                                        <span class="metric-value">$2.4B</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Competition</span>
+                                        <span class="metric-value">Medium</span>
+                                    </div>
+                                    <div class="metric">
+                                        <span class="metric-label">Opportunity</span>
+                                        <span class="metric-value">High</span>
+                                    </div>
+                                </div>
+                                <div class="popup-insights">
+                                    <p>🎯 High-growth market with emerging opportunities</p>
+                                    <p>📈 Strong demand signals detected</p>
+                                    <p>💡 3 actionable insights available</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- AI Bots Section -->
@@ -491,23 +594,40 @@
 
         // Payment button event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Starter Plan - ₹1/month
+            // Starter Plan - $99/month (₹8,250 approx)
             document.getElementById('rzp-starter').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('Starter Plan', 100, 'Starter Plan - ₹1/month subscription');
+                initiatePayment('AI Bot Platform - Starter', 825000, 'Starter Plan - $99/month (₹8,250) - 1 AI Bot + Dashboard Access');
             };
 
-            // Professional Plan - ₹449/month
+            // Professional Plan - $299/month (₹24,900 approx)
             document.getElementById('rzp-professional').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('Professional Plan', 44900, 'Professional Plan - ₹449/month subscription');
+                initiatePayment('AI Bot Platform - Professional', 2490000, 'Professional Plan - $299/month (₹24,900) - All 3 AI Bots + Advanced Features');
             };
 
-            // Enterprise Plan - ₹4999/month
+            // Enterprise Plan - $999/month (₹83,250 approx)
             document.getElementById('rzp-enterprise').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('Enterprise Plan', 499900, 'Enterprise Plan - ₹4999/month subscription');
+                initiatePayment('AI Bot Platform - Enterprise', 8325000, 'Enterprise Plan - $999/month (₹83,250) - Full Platform + API Access');
             };
+
+            // Extension notification signup
+            const notifyBtn = document.getElementById('notify-extension');
+            if (notifyBtn) {
+                notifyBtn.onclick = function(e) {
+                    e.preventDefault();
+                    // Simple email collection for extension notifications
+                    const email = prompt('Enter your email to get notified when the Chrome extension launches:');
+                    if (email && email.includes('@')) {
+                        alert('Thank you! We\'ll notify you at ' + email + ' when the Chrome extension is available.');
+                        // In a real implementation, this would save to a database
+                        console.log('Extension notification signup:', email);
+                    } else if (email) {
+                        alert('Please enter a valid email address.');
+                    }
+                };
+            }
         });
     </script>
 </body>
