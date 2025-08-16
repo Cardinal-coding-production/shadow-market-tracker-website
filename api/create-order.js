@@ -1,11 +1,6 @@
 // Vercel serverless function for Razorpay order creation
 const Razorpay = require('razorpay');
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
-
 module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,6 +28,12 @@ module.exports = async function handler(req, res) {
       error: 'Payment service configuration error. Please contact support.'
     });
   }
+
+  // Initialize Razorpay with credentials
+  const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
 
   try {
     const { amount, currency = 'INR', receipt, notes } = req.body;

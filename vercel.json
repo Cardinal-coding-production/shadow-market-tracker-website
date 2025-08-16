@@ -1,31 +1,16 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/create-order.js": {
+      "runtime": "@vercel/node@18.x"
     },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
+    "api/verify-payment.js": {
+      "runtime": "@vercel/node@18.x"
     },
-    {
-      "src": "platform/**",
-      "use": "@vercel/static"
+    "api/test.js": {
+      "runtime": "@vercel/node@18.x"
     },
-    {
-      "src": "assets/**",
-      "use": "@vercel/static"
+    "api/index.js": {
+      "runtime": "@vercel/node@18.x"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
+  }
 }
