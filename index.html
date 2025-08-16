@@ -336,8 +336,8 @@
                     <div class="pricing-header">
                         <h3 class="pricing-title">Starter</h3>
                         <div class="pricing-price">
-                            <span class="price-currency">$</span>
-                            <span class="price-amount">99</span>
+                            <span class="price-currency">₹</span>
+                            <span class="price-amount">699</span>
                             <span class="price-period">/month</span>
                         </div>
                         <p class="pricing-description">Perfect for small businesses and startups</p>
@@ -350,7 +350,7 @@
                         <li>✅ Dashboard access</li>
                     </ul>
                     <button id="rzp-starter" class="btn btn-secondary btn-full">
-                        Start Free Trial - $99/month
+                        Subscribe Now - ₹699/month
                     </button>
                 </div>
                 <div class="pricing-card pricing-featured">
@@ -358,8 +358,8 @@
                     <div class="pricing-header">
                         <h3 class="pricing-title">Professional</h3>
                         <div class="pricing-price">
-                            <span class="price-currency">$</span>
-                            <span class="price-amount">299</span>
+                            <span class="price-currency">₹</span>
+                            <span class="price-amount">5,999</span>
                             <span class="price-period">/month</span>
                         </div>
                         <p class="pricing-description">Ideal for growing businesses</p>
@@ -374,15 +374,15 @@
                         <li>✅ Custom reports</li>
                     </ul>
                     <button id="rzp-professional" class="btn btn-primary btn-full">
-                        Start Free Trial - $299/month
+                        Subscribe Now - ₹5,999/month
                     </button>
                 </div>
                 <div class="pricing-card">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Enterprise</h3>
                         <div class="pricing-price">
-                            <span class="price-currency">$</span>
-                            <span class="price-amount">999</span>
+                            <span class="price-currency">₹</span>
+                            <span class="price-amount">29,999</span>
                             <span class="price-period">/month</span>
                         </div>
                         <p class="pricing-description">For large teams and organizations</p>
@@ -397,12 +397,12 @@
                         <li>✅ Custom integrations</li>
                     </ul>
                     <button id="rzp-enterprise" class="btn btn-secondary btn-full">
-                        Contact Sales - $999/month
+                        Subscribe Now - ₹29,999/month
                     </button>
                 </div>
             </div>
             <div class="pricing-note">
-                <p>💳 All plans include a 14-day free trial. Cancel anytime. Annual billing available with 20% discount.</p>
+                <p>💳 All plans include a 7-day free trial. Cancel anytime. Annual billing available with 20% discount. Secure payments via Razorpay.</p>
             </div>
         </div>
     </section>
@@ -594,22 +594,22 @@
 
         // Payment button event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Starter Plan - $99/month (₹8,250 approx)
+            // Starter Plan - ₹699/month
             document.getElementById('rzp-starter').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('AI Bot Platform - Starter', 825000, 'Starter Plan - $99/month (₹8,250) - 1 AI Bot + Dashboard Access');
+                initiatePayment('AI Bot Platform - Starter', 69900, 'Starter Plan - ₹699/month - 1 AI Bot + Dashboard Access + 1,000 alerts/month');
             };
 
-            // Professional Plan - $299/month (₹24,900 approx)
+            // Professional Plan - ₹5,999/month
             document.getElementById('rzp-professional').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('AI Bot Platform - Professional', 2490000, 'Professional Plan - $299/month (₹24,900) - All 3 AI Bots + Advanced Features');
+                initiatePayment('AI Bot Platform - Professional', 599900, 'Professional Plan - ₹5,999/month - All 3 AI Bots + Advanced Features + 10,000 alerts/month');
             };
 
-            // Enterprise Plan - $999/month (₹83,250 approx)
+            // Enterprise Plan - ₹29,999/month
             document.getElementById('rzp-enterprise').onclick = function(e) {
                 e.preventDefault();
-                initiatePayment('AI Bot Platform - Enterprise', 8325000, 'Enterprise Plan - $999/month (₹83,250) - Full Platform + API Access');
+                initiatePayment('AI Bot Platform - Enterprise', 2999900, 'Enterprise Plan - ₹29,999/month - Full Platform + API Access + Unlimited alerts');
             };
 
             // Extension notification signup
