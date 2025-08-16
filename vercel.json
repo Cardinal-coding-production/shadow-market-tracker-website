@@ -1,16 +1,15 @@
 {
-  "functions": {
-    "api/create-order.js": {
-      "runtime": "@vercel/node@18.x"
-    },
-    "api/verify-payment.js": {
-      "runtime": "@vercel/node@18.x"
-    },
-    "api/test.js": {
-      "runtime": "@vercel/node@18.x"
-    },
-    "api/index.js": {
-      "runtime": "@vercel/node@18.x"
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
-  }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ]
 }
