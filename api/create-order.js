@@ -1,7 +1,7 @@
 // Vercel serverless function for Razorpay order creation
-import Razorpay from 'razorpay';
+const Razorpay = require('razorpay');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');

@@ -2,7 +2,6 @@
   "name": "shadow-market-tracker-website",
   "version": "1.0.0",
   "description": "Shadow Market Tracker Landing Page with Razorpay Integration",
-  "type": "module",
   "main": "index.html",
   "scripts": {
     "dev": "vercel dev",
