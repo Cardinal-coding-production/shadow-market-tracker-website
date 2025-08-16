@@ -58,96 +58,165 @@
     <!-- Products Section -->
     <section class="products-section">
         <div class="container">
-            <!-- Chrome Extension Plans -->
-            <div class="product-category">
-                <h2 class="category-title">Chrome Extension Subscriptions</h2>
-                <p class="category-description">AI-powered business intelligence directly in your browser</p>
-                
-                <div class="products-grid">
-                    <!-- Starter Plan -->
-                    <div class="product-card" data-product="starter">
-                        <div class="product-image">
-                            <div class="product-icon">🚀</div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Starter Plan</h3>
-                            <p class="product-description">Perfect for individual entrepreneurs and small business owners</p>
-                            <div class="product-price">
-                                <span class="price-currency">₹</span>
-                                <span class="price-amount">399</span>
-                                <span class="price-period">/month</span>
-                            </div>
-                            <ul class="product-features">
-                                <li>✅ 100 page analyses per month</li>
-                                <li>✅ Basic market insights</li>
-                                <li>✅ Email support</li>
-                                <li>✅ Chrome extension access</li>
-                                <li>✅ 14-day free trial</li>
-                            </ul>
-                            <div class="product-actions">
-                                <button class="btn btn-primary add-to-cart" data-plan="starter" data-price="399" data-title="Starter Plan">
-                                    Add to Cart
-                                </button>
-                                <button class="btn btn-secondary">Start Free Trial</button>
-                            </div>
+            <div class="section-header">
+                <h2>Chrome Extension Plans</h2>
+                <p>AI-powered business intelligence directly in your browser</p>
+            </div>
+
+            <div class="products-grid">
+                <!-- Basic Plan -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Basic Plan</h3>
+                        <div class="product-price">
+                            <span class="currency">₹</span>
+                            <span class="amount">699</span>
+                            <span class="period">/month</span>
                         </div>
                     </div>
+                    <div class="product-features">
+                        <ul>
+                            <li>✅ Chrome Extension Access</li>
+                            <li>✅ 100 Page Analyses/Month</li>
+                            <li>✅ Basic Market Insights</li>
+                            <li>✅ Email Support</li>
+                            <li>✅ 7-day Free Trial</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-primary add-to-cart"
+                            data-name="Chrome Extension - Basic Plan"
+                            data-price="699"
+                            data-description="Monthly subscription for Chrome Extension with basic features">
+                        Add to Cart
+                    </button>
+                </div>
 
-                    <!-- Professional Plan -->
-                    <div class="product-card featured" data-product="professional">
-                        <div class="product-badge">Most Popular</div>
-                        <div class="product-image">
-                            <div class="product-icon">💼</div>
-                        </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Professional Plan</h3>
-                            <p class="product-description">Ideal for growing businesses and marketing teams</p>
-                            <div class="product-price">
-                                <span class="price-currency">₹</span>
-                                <span class="price-amount">1599</span>
-                                <span class="price-period">/month</span>
-                            </div>
-                            <ul class="product-features">
-                                <li>✅ Unlimited page analyses</li>
-                                <li>✅ Advanced AI insights</li>
-                                <li>✅ Real-time alerts</li>
-                                <li>✅ Priority support</li>
-                                <li>✅ Export capabilities</li>
-                                <li>✅ Custom reports</li>
-                            </ul>
-                            <div class="product-actions">
-                                <button class="btn btn-primary add-to-cart" data-plan="professional" data-price="1599" data-title="Professional Plan">
-                                    Add to Cart
-                                </button>
-                                <button class="btn btn-secondary">Start Free Trial</button>
-                            </div>
+                <!-- Pro Plan -->
+                <div class="product-card featured">
+                    <div class="product-badge">Most Popular</div>
+                    <div class="product-header">
+                        <h3>Pro Plan</h3>
+                        <div class="product-price">
+                            <span class="currency">₹</span>
+                            <span class="amount">1299</span>
+                            <span class="period">/month</span>
                         </div>
                     </div>
+                    <div class="product-features">
+                        <ul>
+                            <li>✅ Chrome Extension Access</li>
+                            <li>✅ 500 Page Analyses/Month</li>
+                            <li>✅ Advanced Market Insights</li>
+                            <li>✅ Priority Support</li>
+                            <li>✅ Export Reports</li>
+                            <li>✅ 14-day Free Trial</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-primary add-to-cart"
+                            data-name="Chrome Extension - Pro Plan"
+                            data-price="1299"
+                            data-description="Monthly subscription for Chrome Extension with advanced features">
+                        Add to Cart
+                    </button>
+                </div>
 
-                    <!-- Enterprise Plan -->
-                    <div class="product-card" data-product="enterprise">
-                        <div class="product-image">
-                            <div class="product-icon">🏢</div>
+                <!-- Enterprise Plan -->
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Enterprise Plan</h3>
+                        <div class="product-price">
+                            <span class="currency">₹</span>
+                            <span class="amount">2499</span>
+                            <span class="period">/month</span>
                         </div>
-                        <div class="product-info">
-                            <h3 class="product-title">Enterprise Plan</h3>
-                            <p class="product-description">For large teams and organizations</p>
-                            <div class="product-price">
-                                <span class="price-currency">₹</span>
-                                <span class="price-amount">7999</span>
-                                <span class="price-period">/month</span>
-                            </div>
-                            <ul class="product-features">
-                                <li>✅ Everything in Professional</li>
-                                <li>✅ Team collaboration</li>
-                                <li>✅ API access</li>
-                                <li>✅ White-label options</li>
-                                <li>✅ Dedicated support</li>
-                                <li>✅ Custom integrations</li>
-                            </ul>
-                            <div class="product-actions">
-                                <button class="btn btn-primary add-to-cart" data-plan="enterprise" data-price="7999" data-title="Enterprise Plan">
-                                    Add to Cart
+                    </div>
+                    <div class="product-features">
+                        <ul>
+                            <li>✅ Chrome Extension Access</li>
+                            <li>✅ Unlimited Page Analyses</li>
+                            <li>✅ Premium Market Insights</li>
+                            <li>✅ 24/7 Priority Support</li>
+                            <li>✅ Custom Reports</li>
+                            <li>✅ API Access</li>
+                            <li>✅ 30-day Free Trial</li>
+                        </ul>
+                    </div>
+                    <button class="btn btn-primary add-to-cart"
+                            data-name="Chrome Extension - Enterprise Plan"
+                            data-price="2499"
+                            data-description="Monthly subscription for Chrome Extension with enterprise features">
+                        Add to Cart
+                    </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="cart-close" id="cartClose">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be populated by JavaScript -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: ₹<span id="cartTotal">0</span></strong>
+            </div>
+            <button class="btn btn-primary btn-full" id="checkoutBtn">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="footer-logo">🔍</span>
+                    <span class="footer-title">Shadow Market Tracker</span>
+                    <p class="footer-description">
+                        AI-powered business intelligence for the modern web
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Company</h4>
+                        <a href="about.html">About Us</a>
+                        <a href="products.html">Products</a>
+                        <a href="index.html#contact">Contact</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Support</h4>
+                        <a href="index.html#contact">Contact</a>
+                        <a href="mailto:pranavdev.businessai@gmail.com">Help Center</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <a href="mailto:pranavdev.businessai@gmail.com">📧 pranavdev.businessai@gmail.com</a>
+                        <p class="footer-address">🏢 C-334, Malviya Nagar<br>Jaipur, Rajasthan 302017, India</p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Legal</h4>
+                        <a href="privacy.html">Privacy Policy</a>
+                        <a href="terms.html">Terms of Service</a>
+                        <a href="refund-policy.html">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Shadow Market Tracker. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
                                 </button>
                                 <button class="btn btn-secondary">Contact Sales</button>
                             </div>

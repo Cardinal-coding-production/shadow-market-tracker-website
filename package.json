@@ -5,12 +5,16 @@
   "main": "index.html",
   "type": "module",
   "scripts": {
-    "build": "echo 'Build complete - static site'",
+    "build": "echo 'Build complete - static site ready for deployment'",
     "dev": "vercel dev",
-    "start": "vercel dev"
+    "start": "vercel dev",
+    "vercel-build": "echo 'Build complete - static site ready for deployment'"
   },
   "dependencies": {
     "razorpay": "^2.9.2"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
   },
   "engines": {
     "node": "18.x"
