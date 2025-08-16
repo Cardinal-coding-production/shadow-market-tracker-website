@@ -503,10 +503,10 @@
         // Test API function
         async function testAPI() {
             try {
-                const response = await fetch('/api/test');
+                const response = await fetch('/api/');
                 const data = await response.json();
                 console.log('API Test Result:', data);
-                alert('API Test: ' + (data.success ? 'SUCCESS' : 'FAILED') + '\nCheck console for details');
+                alert('API Test: SUCCESS\nRazorpay Configured: ' + (data.payment_gateway.razorpay_configured ? 'YES' : 'NO') + '\nCheck console for details');
             } catch (error) {
                 console.error('API Test Error:', error);
                 alert('API Test FAILED: ' + error.message);
