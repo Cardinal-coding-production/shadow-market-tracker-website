@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bot Platform - Shadow Market Tracker</title>
+    <meta name="description" content="Access your AI Bot Platform dashboard with Google OAuth authentication.">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">
+                    <i class="fas fa-chart-line"></i>
+                    Shadow Market Tracker
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="products.html" class="nav-link">Products</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="platform.html" class="nav-link active">Platform</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Platform Hero -->
+    <section class="hero-section platform-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">AI Bot Platform</h1>
+                <p class="hero-subtitle">
+                    Access your personalized AI bots for competitive intelligence, 
+                    gap finding, and tender alerts. Sign in with Google to get started.
+                </p>
+                <div class="platform-actions">
+                    <a href="#" id="google-signin" class="btn btn-primary btn-large">
+                        <i class="fab fa-google"></i>
+                        Sign in with Google
+                    </a>
+                    <a href="index.html#ai-bots" class="btn btn-secondary btn-large">
+                        <i class="fas fa-info-circle"></i>
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Features -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Platform Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>3 AI Bots</h3>
+                    <p>Competitive News, Gap Finder, and Tender Alert bots powered by 150+ APIs</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure OAuth</h3>
+                    <p>Google OAuth integration for secure and seamless authentication</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Real-time Dashboard</h3>
+                    <p>Monitor your bots, alerts, and opportunities in real-time</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Shadow Market Tracker</h3>
+                    <p>AI-powered business intelligence platform</p>
+                </div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="terms.html">Terms of Service</a>
+                    <a href="refund-policy.html">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Google OAuth Sign-in
+        document.getElementById('google-signin').onclick = function(e) {
+            e.preventDefault();
+            // For now, redirect to a coming soon page
+            // Later this will integrate with the actual OAuth flow
+            alert('🚀 AI Bot Platform with Google OAuth is launching soon! \n\nYou\'ll be able to:\n✅ Sign in with Google\n✅ Access 3 AI Bots\n✅ Get real-time alerts\n✅ Monitor opportunities\n\nStay tuned!');
+        };
+    </script>
+</body>
+</html>
