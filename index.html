@@ -105,10 +105,10 @@
         <div class="container">
             <div class="extension-content">
                 <div class="extension-text">
-                    <h2 class="section-title">Chrome Extension Coming Soon!</h2>
+                    <h2 class="section-title">🎉 Chrome Extension NOW LIVE!</h2>
                     <p class="section-subtitle">
                         Get instant market intelligence while browsing any website. Our Chrome extension
-                        is currently under review by Google and will be available soon.
+                        is now officially published and available on the Chrome Web Store!
                     </p>
                     <div class="extension-features">
                         <div class="feature-item">
@@ -129,10 +129,10 @@
                         </div>
                     </div>
                     <div class="extension-buttons">
-                        <button class="btn btn-primary btn-large" id="notify-extension">
-                            <i class="fas fa-bell"></i>
-                            Notify Me When Available
-                        </button>
+                        <a href="https://chrome.google.com/webstore/detail/shadow-market-tracker" class="btn btn-primary btn-large" target="_blank">
+                            <i class="fab fa-chrome"></i>
+                            Install Chrome Extension
+                        </a>
                         <a href="#ai-bots" class="btn btn-secondary btn-large">
                             <i class="fas fa-robot"></i>
                             Try AI Bots Now
@@ -141,15 +141,15 @@
                     <div class="extension-status">
                         <div class="status-item">
                             <i class="fas fa-check-circle text-success"></i>
-                            <span>Submitted to Chrome Web Store</span>
+                            <span>✅ Published on Chrome Web Store</span>
                         </div>
                         <div class="status-item">
-                            <i class="fas fa-clock text-warning"></i>
-                            <span>Under Google Review</span>
+                            <i class="fas fa-star text-success"></i>
+                            <span>🎉 Available for Download NOW!</span>
                         </div>
                         <div class="status-item">
-                            <i class="fas fa-rocket text-info"></i>
-                            <span>Launch Expected Soon</span>
+                            <i class="fas fa-rocket text-success"></i>
+                            <span>🚀 LIVE and Ready to Use!</span>
                         </div>
                     </div>
                 </div>
@@ -650,22 +650,8 @@
                 initiatePayment('AI Bot Platform - Enterprise', 2999900, 'Enterprise Plan - ₹29,999/month - Full Platform + API Access + Unlimited alerts');
             };
 
-            // Extension notification signup
-            const notifyBtn = document.getElementById('notify-extension');
-            if (notifyBtn) {
-                notifyBtn.onclick = function(e) {
-                    e.preventDefault();
-                    // Simple email collection for extension notifications
-                    const email = prompt('Enter your email to get notified when the Chrome extension launches:');
-                    if (email && email.includes('@')) {
-                        alert('Thank you! We\'ll notify you at ' + email + ' when the Chrome extension is available.');
-                        // In a real implementation, this would save to a database
-                        console.log('Extension notification signup:', email);
-                    } else if (email) {
-                        alert('Please enter a valid email address.');
-                    }
-                };
-            }
+            // Extension is now live - no notification signup needed
+            console.log('Chrome Extension is now LIVE on the Chrome Web Store!');
         });
     </script>
 </body>
