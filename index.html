@@ -3,198 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shadow Market Tracker - AI-Powered Chrome Extension for Business Intelligence</title>
-    <meta name="description" content="Transform your web browsing into powerful business intelligence with our AI-powered Chrome extension. Get instant market insights, competitor analysis, and business data from any webpage.">
-
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Shadow Market Tracker - AI Chrome Extension">
-    <meta property="og:description" content="AI-powered Chrome extension for instant business intelligence and market insights from any webpage.")
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cardinal-coding-production.github.io/shadow-market-tracker-website">
-    <meta property="og:image" content="https://cardinal-coding-production.github.io/shadow-market-tracker-website/assets/img/og-image.png">
-
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Shadow Market Tracker - Enterprise AI Bot Platform">
-    <meta name="twitter:description" content="AI Bot Platform for competitive intelligence, gap analysis, and tender monitoring."
+    <title>Shadow Market Tracker - AI-Powered Business Intelligence Platform</title>
+    <meta name="description" content="Transform your business intelligence with AI bots that integrate seamlessly into your workflow. Get competitive insights, find market gaps, and never miss opportunities.">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
-    
-    <!-- Google Fonts -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/cyberpunk.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* OAuth Integration Styles */
+        .oauth-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .oauth-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .oauth-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        /* Workflow Integration Showcase */
+        .workflow-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .workflow-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .workflow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-button);
+        }
+        
+        .workflow-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-purple);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .workflow-icon {
+            font-size: 3rem;
+            color: var(--text-accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .workflow-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .workflow-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .integration-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .integration-tag {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--text-accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        /* Bot Status Indicators */
+        .bot-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--text-success);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid var(--text-success);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* User Dashboard Preview */
+        .dashboard-preview {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .preview-user {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-button);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Special Access Indicator */
+        .special-access {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
                 <span class="nav-logo">🔍</span>
-                <span class="nav-title">Shadow Market Tracker</span>
-            </div>
-            <div class="nav-menu" id="navMenu">
-                <a href="about.html" class="nav-link">About</a>
-                <a href="products.html" class="nav-link">Products</a>
-                <a href="platform-app.html" class="nav-link">🤖 AI Platform</a>
-                <a href="#extension" class="nav-link">Extension</a>
+                <span>Shadow Market Tracker</span>
+            </a>
+            <div class="nav-menu">
                 <a href="#features" class="nav-link">Features</a>
+                <a href="#workflow" class="nav-link">Workflow</a>
+                <a href="bot-showcase.html" class="nav-link">Bot Demo</a>
                 <a href="#pricing" class="nav-link">Pricing</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <div class="cart-icon" id="cartIcon">
-                    🛒 <span class="cart-count" id="cartCount">0</span>
+                <div id="nav-auth-section">
+                    <!-- OAuth button will be inserted here -->
                 </div>
-            </div>
-            <div class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    Enterprise AI Bot Platform for
-                    <span class="text-accent">Market Intelligence</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Deploy specialized AI bots for competitive intelligence, market gap analysis, and tender monitoring.
-                    Automate your market research with enterprise-grade AI powered by 150+ data sources.
+    <!-- Hero Section with Integrated OAuth -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content fade-in">
+                <h1>AI-Powered Business Intelligence That Actually Works</h1>
+                <p class="subtitle">
+                    Stop missing opportunities. Our AI bots integrate directly into your workflow, 
+                    delivering actionable intelligence through the channels you already use.
                 </p>
-                <div class="hero-powered">
-                    <span class="powered-text">⚡ Powered by 150+ APIs</span>
+                
+                <!-- OAuth Integration - Front and Center -->
+                <div class="oauth-section">
+                    <h3 class="oauth-title">🚀 Start Your Intelligence Journey</h3>
+                    <p class="oauth-subtitle">
+                        Sign in with Google to access your personalized AI bot dashboard
+                    </p>
+                    
+                    <!-- Google Sign-In Button -->
+                    <div id="g_id_onload"
+                         data-client_id="242918573251-2ncpsgn706ubrbbvo683h9g0pdiis0pt.apps.googleusercontent.com"
+                         data-callback="handleCredentialResponse"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-size="large"
+                         data-theme="filled_black"
+                         data-text="continue_with"
+                         data-shape="rectangular"
+                         data-logo_alignment="left">
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <small style="color: var(--text-secondary);">
+                            ✨ Special access for <strong>tycoonsofdawn@gmail.com</strong> - All features unlocked
+                        </small>
+                    </div>
                 </div>
-                <div class="hero-buttons">
-                    <a href="platform/dashboard.html" class="btn btn-primary btn-large">
-                        <span>🤖</span>
-                        Launch Platform
-                    </a>
-                    <a href="#ai-bots" class="btn btn-secondary btn-large">
-                        <span>🔍</span>
-                        Explore AI Bots
-                    </a>
-                </div>
+                
                 <div class="hero-stats">
-                    <div class="stat">
-                        <span class="stat-number">3</span>
-                        <span class="stat-label">Specialized AI Bots</span>
-                    </div>
-                    <div class="stat">
+                    <div class="stat-item">
                         <span class="stat-number">150+</span>
-                        <span class="stat-label">Data Sources</span>
+                        <span class="stat-label">APIs Integrated</span>
                     </div>
-                    <div class="stat">
+                    <div class="stat-item">
+                        <span class="stat-number">3</span>
+                        <span class="stat-label">AI Bots Ready</span>
+                    </div>
+                    <div class="stat-item">
                         <span class="stat-number">24/7</span>
                         <span class="stat-label">Monitoring</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="hero-bg-effect"></div>
-    </section>
-
-    <!-- Chrome Extension Section -->
-    <section id="extension" class="extension-section">
-        <div class="container">
-            <div class="extension-content">
-                <div class="extension-text">
-                    <h2 class="section-title">🎉 Chrome Extension NOW LIVE!</h2>
-                    <p class="section-subtitle">
-                        Get instant market intelligence while browsing any website. Our Chrome extension
-                        is now officially published and available on the Chrome Web Store!
-                    </p>
-                    <div class="extension-features">
-                        <div class="feature-item">
-                            <i class="fas fa-bolt"></i>
-                            <span>Real-time webpage analysis</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-chart-line"></i>
-                            <span>Instant market insights</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>Secure & privacy-focused</span>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-zap"></i>
-                            <span>One-click intelligence</span>
+            
+            <div class="hero-visual slide-up">
+                <!-- Dashboard Preview -->
+                <div class="dashboard-preview">
+                    <div class="preview-header">
+                        <h4 class="preview-title">Your AI Dashboard</h4>
+                        <div class="preview-user">
+                            <div class="user-avatar">U</div>
+                            <span>Ready for you</span>
                         </div>
                     </div>
-                    <div class="extension-buttons">
-                        <a href="https://chromewebstore.google.com/detail/lbokbeojlbgolhoejkcjhjgpabnahkom" class="btn btn-primary btn-large" target="_blank">
-                            <i class="fab fa-chrome"></i>
-                            Install Chrome Extension
-                        </a>
-                        <a href="#ai-bots" class="btn btn-secondary btn-large">
-                            <i class="fas fa-robot"></i>
-                            Try AI Bots Now
-                        </a>
-                    </div>
-                    <div class="extension-status">
-                        <div class="status-item">
-                            <i class="fas fa-check-circle text-success"></i>
-                            <span>✅ Published on Chrome Web Store</span>
-                        </div>
-                        <div class="status-item">
-                            <i class="fas fa-star text-success"></i>
-                            <span>🎉 Available for Download NOW!</span>
-                        </div>
-                        <div class="status-item">
-                            <i class="fas fa-rocket text-success"></i>
-                            <span>🚀 LIVE and Ready to Use!</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="extension-preview">
-                    <div class="browser-mockup">
-                        <div class="browser-header">
-                            <div class="browser-buttons">
-                                <span class="btn-close"></span>
-                                <span class="btn-minimize"></span>
-                                <span class="btn-maximize"></span>
-                            </div>
-                            <div class="browser-url">
-                                <i class="fas fa-lock"></i>
-                                <span>https://example.com</span>
-                            </div>
-                            <div class="extension-icon">
-                                <i class="fas fa-search" title="Shadow Market Tracker"></i>
+                    
+                    <div class="workflow-demo">
+                        <div class="workflow-card">
+                            <span class="workflow-icon">📰</span>
+                            <div class="bot-status">
+                                <span class="status-dot"></span>
+                                Competitive News Bot
                             </div>
                         </div>
-                        <div class="browser-content">
-                            <div class="extension-popup">
-                                <div class="popup-header">
-                                    <h4>Market Intelligence</h4>
-                                    <span class="popup-badge">AI Analysis</span>
-                                </div>
-                                <div class="popup-metrics">
-                                    <div class="metric">
-                                        <span class="metric-label">Market Size</span>
-                                        <span class="metric-value">$2.4B</span>
-                                    </div>
-                                    <div class="metric">
-                                        <span class="metric-label">Competition</span>
-                                        <span class="metric-value">Medium</span>
-                                    </div>
-                                    <div class="metric">
-                                        <span class="metric-label">Opportunity</span>
-                                        <span class="metric-value">High</span>
-                                    </div>
-                                </div>
-                                <div class="popup-insights">
-                                    <p>🎯 High-growth market with emerging opportunities</p>
-                                    <p>📈 Strong demand signals detected</p>
-                                    <p>💡 3 actionable insights available</p>
-                                </div>
+                        <div class="workflow-card">
+                            <span class="workflow-icon">🔍</span>
+                            <div class="bot-status">
+                                <span class="status-dot"></span>
+                                Gap Finder Bot
+                            </div>
+                        </div>
+                        <div class="workflow-card">
+                            <span class="workflow-icon">📋</span>
+                            <div class="bot-status">
+                                <span class="status-dot"></span>
+                                Tender Alert Bot
                             </div>
                         </div>
                     </div>
@@ -203,456 +319,198 @@
         </div>
     </section>
 
-    <!-- AI Bots Section -->
-    <section id="ai-bots" class="ai-bots">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Meet Your AI Bot Team</h2>
-                <p class="section-subtitle">
-                    Three specialized AI bots working 24/7 to give you the competitive edge
+    <!-- Workflow Integration Section -->
+    <section id="workflow" style="padding: 5rem 0; max-width: 1200px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+                How Your Bots Integrate Into Your Workflow
+            </h2>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+                Choose how you want to receive intelligence. Our bots work where you work.
+            </p>
+        </div>
+        
+        <div class="workflow-demo">
+            <div class="workflow-card">
+                <span class="workflow-icon">📱</span>
+                <h3 class="workflow-title">Mobile Notifications</h3>
+                <p class="workflow-description">
+                    Get instant alerts on your phone when opportunities arise. Never miss a tender, 
+                    competitive move, or market gap again.
                 </p>
+                <div class="integration-options">
+                    <span class="integration-tag">Push Notifications</span>
+                    <span class="integration-tag">SMS Alerts</span>
+                    <span class="integration-tag">WhatsApp</span>
+                </div>
             </div>
-            <div class="bots-grid">
-                <div class="bot-card">
-                    <div class="bot-icon">
-                        <i class="fas fa-chart-line feature-icon"></i>
-                    </div>
-                    <h3 class="bot-title">Competitive News Bot</h3>
-                    <p class="bot-description">
-                        Monitors competitor websites, pricing changes, feature launches, and market movements.
-                        Get instant alerts when competitors make strategic moves.
-                    </p>
-                    <div class="bot-features">
-                        <span class="bot-feature">• Real-time competitor monitoring</span>
-                        <span class="bot-feature">• Pricing change detection</span>
-                        <span class="bot-feature">• Feature launch alerts</span>
-                        <span class="bot-feature">• Market intelligence reports</span>
-                    </div>
-                    <a href="platform/bots/competitive-news.html" class="btn btn-outline">Learn More</a>
+            
+            <div class="workflow-card">
+                <span class="workflow-icon">🌐</span>
+                <h3 class="workflow-title">Browser Extension</h3>
+                <p class="workflow-description">
+                    Our Chrome extension overlays intelligence on any website you visit. 
+                    See competitive data while browsing competitor sites.
+                </p>
+                <div class="integration-options">
+                    <span class="integration-tag">Chrome Extension</span>
+                    <span class="integration-tag">Real-time Overlay</span>
+                    <span class="integration-tag">Context-Aware</span>
                 </div>
-
-                <div class="bot-card">
-                    <div class="bot-icon">
-                        <i class="fas fa-search-dollar feature-icon"></i>
-                    </div>
-                    <h3 class="bot-title">Gap Finder Bot</h3>
-                    <p class="bot-description">
-                        Analyzes 150+ data sources to identify underserved market opportunities.
-                        Discover profitable niches before your competitors do.
-                    </p>
-                    <div class="bot-features">
-                        <span class="bot-feature">• Market gap analysis</span>
-                        <span class="bot-feature">• Opportunity scoring</span>
-                        <span class="bot-feature">• Demand vs supply metrics</span>
-                        <span class="bot-feature">• Investment recommendations</span>
-                    </div>
-                    <a href="platform/bots/gap-finder.html" class="btn btn-outline">Learn More</a>
+                <div style="margin-top: 1rem;">
+                    <a href="https://chromewebstore.google.com/detail/lbokbeojlbgolhoejkcjhjgpabnahkom" 
+                       class="btn btn-primary" target="_blank">
+                        <i class="fab fa-chrome"></i>
+                        Install Extension
+                    </a>
                 </div>
-
-                <div class="bot-card">
-                    <div class="bot-icon">
-                        <i class="fas fa-file-contract feature-icon"></i>
-                    </div>
-                    <h3 class="bot-title">Tender & RFP Alert Bot</h3>
-                    <p class="bot-description">
-                        Scans government and private tenders, filters by relevance, and calculates your
-                        winning probability. Never miss a valuable opportunity.
-                    </p>
-                    <div class="bot-features">
-                        <span class="bot-feature">• Tender monitoring</span>
-                        <span class="bot-feature">• Relevance filtering</span>
-                        <span class="bot-feature">• Winning probability</span>
-                        <span class="bot-feature">• Deadline tracking</span>
-                    </div>
-                    <a href="platform/bots/tender-rfp.html" class="btn btn-outline">Learn More</a>
+            </div>
+            
+            <div class="workflow-card">
+                <span class="workflow-icon">💻</span>
+                <h3 class="workflow-title">Desktop Integration</h3>
+                <p class="workflow-description">
+                    Connect to your existing tools. Export data to Excel, integrate with CRM, 
+                    or get reports in Slack.
+                </p>
+                <div class="integration-options">
+                    <span class="integration-tag">Excel Export</span>
+                    <span class="integration-tag">Slack Bot</span>
+                    <span class="integration-tag">API Access</span>
+                    <span class="integration-tag">Webhooks</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Powerful Features</h2>
-                <p class="section-subtitle">
-                    Advanced AI algorithms analyze webpage content to deliver actionable business insights
-                </p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/img/icon-analytics.svg" alt="Real-time Analysis">
-                    </div>
-                    <h3 class="feature-title">Real-time Market Analysis</h3>
-                    <p class="feature-description">
-                        Instantly analyze any webpage for market opportunities, competitor intelligence, 
-                        and business insights with our advanced AI engine.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/img/icon-trends.svg" alt="Market Trends">
-                    </div>
-                    <h3 class="feature-title">Dynamic Market Trends</h3>
-                    <p class="feature-description">
-                        Get industry-specific trends and signals tailored to the content you're viewing. 
-                        Stay ahead with relevant market intelligence.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/img/icon-alerts.svg" alt="Smart Alerts">
-                    </div>
-                    <h3 class="feature-title">Smart Business Alerts</h3>
-                    <p class="feature-description">
-                        Receive intelligent notifications about market changes, competitor moves, 
-                        and emerging opportunities in your industry.
-                    </p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <img src="assets/img/icon-intelligence.svg" alt="AI Intelligence">
-                    </div>
-                    <h3 class="feature-title">AI-Powered Insights</h3>
-                    <p class="feature-description">
-                        Leverage machine learning to identify patterns, predict trends, 
-                        and generate actionable business recommendations.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section id="pricing" class="pricing">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Enterprise AI Bot Platform Pricing</h2>
-                <p class="section-subtitle">
-                    Choose the plan that fits your market intelligence needs. All plans include access to our three specialized AI bots.
-                </p>
-            </div>
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Starter</h3>
-                        <div class="pricing-price">
-                            <span class="price-currency">₹</span>
-                            <span class="price-amount">699</span>
-                            <span class="price-period">/month</span>
-                        </div>
-                        <p class="pricing-description">Perfect for small businesses and startups</p>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✅ 1 AI Bot (your choice)</li>
-                        <li>✅ 1,000 alerts per month</li>
-                        <li>✅ Basic market insights</li>
-                        <li>✅ Email support</li>
-                        <li>✅ Dashboard access</li>
-                    </ul>
-                    <button id="rzp-starter" class="btn btn-secondary btn-full">
-                        Subscribe Now - ₹699/month
-                    </button>
-                </div>
-                <div class="pricing-card pricing-featured">
-                    <div class="pricing-badge">Most Popular</div>
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Professional</h3>
-                        <div class="pricing-price">
-                            <span class="price-currency">₹</span>
-                            <span class="price-amount">5,999</span>
-                            <span class="price-period">/month</span>
-                        </div>
-                        <p class="pricing-description">Ideal for growing businesses</p>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✅ All 3 AI Bots included</li>
-                        <li>✅ 10,000 alerts per month</li>
-                        <li>✅ Advanced AI insights</li>
-                        <li>✅ Real-time monitoring</li>
-                        <li>✅ Priority support</li>
-                        <li>✅ Export capabilities</li>
-                        <li>✅ Custom reports</li>
-                    </ul>
-                    <button id="rzp-professional" class="btn btn-primary btn-full">
-                        Subscribe Now - ₹5,999/month
-                    </button>
-                </div>
-                <div class="pricing-card">
-                    <div class="pricing-header">
-                        <h3 class="pricing-title">Enterprise</h3>
-                        <div class="pricing-price">
-                            <span class="price-currency">₹</span>
-                            <span class="price-amount">29,999</span>
-                            <span class="price-period">/month</span>
-                        </div>
-                        <p class="pricing-description">For large teams and organizations</p>
-                    </div>
-                    <ul class="pricing-features">
-                        <li>✅ Everything in Professional</li>
-                        <li>✅ Unlimited alerts</li>
-                        <li>✅ Team collaboration</li>
-                        <li>✅ API access</li>
-                        <li>✅ White-label options</li>
-                        <li>✅ Dedicated support</li>
-                        <li>✅ Custom integrations</li>
-                    </ul>
-                    <button id="rzp-enterprise" class="btn btn-secondary btn-full">
-                        Subscribe Now - ₹29,999/month
-                    </button>
-                </div>
-            </div>
-            <div class="pricing-note">
-                <p>💳 All plans include a 7-day free trial. Cancel anytime. Annual billing available with 20% discount. Secure payments via Razorpay.</p>
-            </div>
-            <!-- Temporary API Test Button -->
-            <div style="text-align: center; margin-top: 20px;">
-                <button onclick="testAPI()" style="background: #ff6b6b; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-size: 14px;">
-                    🔧 Test API Connection
+    <!-- User Dashboard Section (Hidden until sign-in) -->
+    <section id="user-dashboard" class="hidden" style="padding: 5rem 0; max-width: 1200px; margin: 0 auto;">
+        <div class="dashboard-preview">
+            <div class="preview-header">
+                <h2 class="preview-title">🎉 Welcome to Your AI Command Center!</h2>
+                <button onclick="signOut()" class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Sign Out
                 </button>
             </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">
-                    Have questions? We're here to help you succeed with business intelligence
-                </p>
+            
+            <div id="user-info" style="margin-bottom: 2rem;">
+                <!-- User info will be populated here -->
             </div>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <div class="contact-details">
-                            <h4>Business Support</h4>
-                            <a href="mailto:pranavdev.businessai@gmail.com">support@stm.business</a>
-                        </div>
+            
+            <div class="workflow-demo">
+                <div class="workflow-card">
+                    <span class="workflow-icon">📰</span>
+                    <h3 class="workflow-title">Competitive News Bot</h3>
+                    <div class="bot-status">
+                        <span class="status-dot"></span>
+                        Active & Monitoring
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">🏢</div>
-                        <div class="contact-details">
-                            <h4>Business Address</h4>
-                            <p>C-334, Malviya Nagar<br>Jaipur, Rajasthan 302017<br>India</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">📚</div>
-                        <div class="contact-details">
-                            <h4>Documentation</h4>
-                            <p>Comprehensive guides and tutorials</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="footer-logo">🔍</span>
-                    <span class="footer-title">Shadow Market Tracker</span>
-                    <p class="footer-description">
-                        Enterprise AI Bot Platform for Market Intelligence - Powered by 150+ APIs
+                    <p class="workflow-description">
+                        Tracking 50+ news sources for competitive intelligence in your industry.
                     </p>
+                    <button class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-cog"></i>
+                        Configure Bot
+                    </button>
                 </div>
-                <div class="footer-links">
-                    <div class="footer-section">
-                        <h4>Company</h4>
-                        <a href="about.html">About Us</a>
-                        <a href="products.html">Products</a>
-                        <a href="#features">Features</a>
-                        <a href="#pricing">Pricing</a>
+                
+                <div class="workflow-card">
+                    <span class="workflow-icon">🔍</span>
+                    <h3 class="workflow-title">Gap Finder Bot</h3>
+                    <div class="bot-status">
+                        <span class="status-dot"></span>
+                        Active & Monitoring
                     </div>
-                    <div class="footer-section">
-                        <h4>Support</h4>
-                        <a href="#contact">Contact</a>
-                        <a href="mailto:pranavdev.businessai@gmail.com">Help Center</a>
-                        <a href="refund-policy.html">Refund Policy</a>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Contact Info</h4>
-                        <a href="mailto:pranavdev.businessai@gmail.com">📧 support@stm.business</a>
-                        <p class="footer-address">🏢 C-334, Malviya Nagar<br>Jaipur, Rajasthan 302017, India</p>
-                    </div>
-                    <div class="footer-section">
-                        <h4>Legal</h4>
-                        <a href="privacy.html">Privacy Policy</a>
-                        <a href="terms.html">Terms of Service</a>
-                        <a href="refund-policy.html">Refund Policy</a>
-                    </div>
+                    <p class="workflow-description">
+                        Analyzing 150+ data sources to identify underserved market opportunities.
+                    </p>
+                    <button class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-cog"></i>
+                        Configure Bot
+                    </button>
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Shadow Market Tracker. All rights reserved.</p>
+                
+                <div class="workflow-card">
+                    <span class="workflow-icon">📋</span>
+                    <h3 class="workflow-title">Tender Alert Bot</h3>
+                    <div class="bot-status">
+                        <span class="status-dot"></span>
+                        Active & Monitoring
+                    </div>
+                    <p class="workflow-description">
+                        Monitoring government and private sector tenders matching your criteria.
+                    </p>
+                    <button class="btn btn-primary" style="margin-top: 1rem;">
+                        <i class="fas fa-cog"></i>
+                        Configure Bot
+                    </button>
+                </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Scripts -->
-    <script src="assets/js/script.js"></script>
-
-    <!-- Razorpay Integration -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
-        // Test API function
-        async function testAPI() {
-            try {
-                const response = await fetch('/api/?action=test');
-                const data = await response.json();
-                console.log('API Test Result:', data);
-                alert('API Test: ' + (data.success ? 'SUCCESS' : 'FAILED') + '\nRazorpay Configured: ' + (data.environment.hasRazorpayKeyId ? 'YES' : 'NO') + '\nCheck console for details');
-            } catch (error) {
-                console.error('API Test Error:', error);
-                alert('API Test FAILED: ' + error.message);
-            }
+        // Google OAuth Handler
+        function handleCredentialResponse(response) {
+            const responsePayload = decodeJwtResponse(response.credential);
+            
+            // Check for special access
+            const isSpecialUser = responsePayload.email === 'tycoonsofdawn@gmail.com' || 
+                                 responsePayload.email === 'pranavdev.businessai@gmail.com';
+            
+            // Hide OAuth section, show dashboard
+            document.querySelector('.oauth-section').style.display = 'none';
+            document.getElementById('user-dashboard').classList.remove('hidden');
+            
+            // Update user info
+            document.getElementById('user-info').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 2rem; background: var(--glass-bg); padding: 2rem; border-radius: 16px; border: 1px solid var(--glass-border);">
+                    <img src="${responsePayload.picture}" alt="Profile" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--primary-purple);">
+                    <div>
+                        <h3 style="color: var(--text-primary); margin-bottom: 0.5rem;">Welcome, ${responsePayload.name}!</h3>
+                        <p style="color: var(--text-secondary); margin-bottom: 0.5rem;">${responsePayload.email}</p>
+                        ${isSpecialUser ? '<div class="special-access"><i class="fas fa-crown"></i> Creator Access - All Features Unlocked</div>' : '<div class="bot-status"><span class="status-dot"></span>Premium Access Active</div>'}
+                    </div>
+                </div>
+            `;
+            
+            // Scroll to dashboard
+            document.getElementById('user-dashboard').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Razorpay payment configuration with proper order creation
-        async function initiatePayment(planName, amount, description) {
-            try {
-                console.log('Initiating payment for:', planName, 'Amount:', amount);
-
-                // First create order on backend
-                const orderResponse = await fetch('/api/?action=create-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        amount: amount,
-                        currency: 'INR',
-                        receipt: `receipt_${planName}_${Date.now()}`,
-                        notes: {
-                            plan: planName,
-                            description: description
-                        }
-                    })
-                });
-
-                console.log('Order response status:', orderResponse.status);
-                const orderData = await orderResponse.json();
-                console.log('Order data:', orderData);
-
-                if (!orderData.success) {
-                    throw new Error('Failed to create order: ' + (orderData.error || orderData.message || 'Unknown error'));
-                }
-
-                var options = {
-                    "key": "rzp_live_R5bUcfPrk6LOKC", // Live Razorpay Key ID
-                    "amount": amount, // Amount in paise (multiply by 100)
-                    "currency": "INR",
-                    "name": "STM",
-                    "description": description,
-                    "order_id": orderData.order_id, // This is crucial for live payments
-                    "image": "https://shadow-market-tracker-website.vercel.app/assets/img/logo.png",
-                    "prefill": {
-                        "name": "",
-                        "email": "",
-                        "contact": ""
-                    },
-                    "notes": {
-                        "plan": planName
-                    },
-                    "theme": {
-                        "color": "#8b5cf6"
-                    },
-                    "handler": async function (response) {
-                        // Verify payment on backend
-                        try {
-                            const verifyResponse = await fetch('/api/?action=verify-payment', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_signature: response.razorpay_signature
-                                })
-                            });
-
-                            const verifyData = await verifyResponse.json();
-
-                            if (verifyData.success) {
-                                // Payment verified - redirect to success page
-                                var successUrl = "payment-success.html" +
-                                    "?razorpay_payment_id=" + response.razorpay_payment_id +
-                                    "&razorpay_order_id=" + response.razorpay_order_id +
-                                    "&razorpay_signature=" + response.razorpay_signature +
-                                    "&plan=" + encodeURIComponent(planName) +
-                                    "&amount=" + (amount/100) +
-                                    "&verified=true";
-
-                                window.location.href = successUrl;
-                            } else {
-                                alert('Payment verification failed. Please contact support.');
-                            }
-                        } catch (error) {
-                            console.error('Payment verification error:', error);
-                            alert('Payment verification failed. Please contact support.');
-                        }
-                    },
-                    "modal": {
-                        "ondismiss": function() {
-                            // Payment cancelled or failed
-                            console.log('Payment cancelled by user');
-                        }
-                    }
-                };
-
-                var rzp = new Razorpay(options);
-                rzp.open();
-
-            } catch (error) {
-                console.error('Payment initiation error:', error);
-
-                // More detailed error message
-                let errorMessage = 'Failed to initiate payment. ';
-                if (error.message.includes('Failed to create order')) {
-                    errorMessage += 'Server error - please contact support.';
-                } else if (error.message.includes('fetch')) {
-                    errorMessage += 'Network error - please check your connection.';
-                } else {
-                    errorMessage += 'Please try again or contact support.';
-                }
-
-                alert(errorMessage);
-            }
+        function decodeJwtResponse(token) {
+            var base64Url = token.split('.')[1];
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
         }
 
-        // Payment button event listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Starter Plan - ₹699/month
-            document.getElementById('rzp-starter').onclick = function(e) {
-                e.preventDefault();
-                console.log('Starter plan clicked');
-                initiatePayment('AI Bot Platform - Starter', 69900, 'Starter Plan - ₹699/month - 1 AI Bot + Dashboard Access + 1,000 alerts/month');
-            };
+        function signOut() {
+            google.accounts.id.disableAutoSelect();
+            document.querySelector('.oauth-section').style.display = 'block';
+            document.getElementById('user-dashboard').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-            // Professional Plan - ₹5,999/month
-            document.getElementById('rzp-professional').onclick = function(e) {
-                e.preventDefault();
-                console.log('Professional plan clicked');
-                initiatePayment('AI Bot Platform - Professional', 599900, 'Professional Plan - ₹5,999/month - All 3 AI Bots + Advanced Features + 10,000 alerts/month');
-            };
+        // Initialize Google Sign-In
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: "242918573251-2ncpsgn706ubrbbvo683h9g0pdiis0pt.apps.googleusercontent.com",
+                callback: handleCredentialResponse
+            });
+        }
 
-            // Enterprise Plan - ₹29,999/month
-            document.getElementById('rzp-enterprise').onclick = function(e) {
-                e.preventDefault();
-                console.log('Enterprise plan clicked');
-                initiatePayment('AI Bot Platform - Enterprise', 2999900, 'Enterprise Plan - ₹29,999/month - Full Platform + API Access + Unlimited alerts');
-            };
-
-            // Extension is now live - no notification signup needed
-            console.log('Chrome Extension is now LIVE on the Chrome Web Store!');
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
     </script>
 </body>

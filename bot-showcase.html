@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bot Showcase - Shadow Market Tracker</title>
+    <meta name="description" content="See exactly how our AI bots work and integrate into your business workflow.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/cyberpunk.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .bot-demo-section {
+            padding: 5rem 0;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+        
+        .demo-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .demo-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-features li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .demo-features li i {
+            color: var(--text-success);
+            font-size: 1.2rem;
+        }
+        
+        .demo-visual {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .demo-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-button);
+        }
+        
+        .mock-interface {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+        
+        .mock-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .mock-title {
+            color: var(--text-accent);
+            font-weight: 600;
+        }
+        
+        .mock-status {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--text-success);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--text-success);
+        }
+        
+        .mock-data {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .mock-alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .mock-alert-title {
+            color: var(--text-error);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .integration-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .integration-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-normal);
+        }
+        
+        .integration-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-purple);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .integration-icon {
+            font-size: 3rem;
+            color: var(--text-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .integration-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .integration-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .reverse {
+            direction: rtl;
+        }
+        
+        .reverse > * {
+            direction: ltr;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-logo">🔍</span>
+                <span>Shadow Market Tracker</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="bot-showcase.html" class="nav-link active">Bot Showcase</a>
+                <a href="#" class="nav-link">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section" style="min-height: 60vh;">
+        <div class="hero-container">
+            <div class="hero-content" style="text-align: center; grid-column: 1 / -1;">
+                <h1>See Your AI Bots In Action</h1>
+                <p class="subtitle">
+                    Discover exactly how our AI bots work, what intelligence they provide, 
+                    and how they integrate seamlessly into your business workflow.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competitive News Bot Demo -->
+    <section class="bot-demo-section">
+        <div class="demo-container">
+            <div class="demo-content">
+                <h2>📰 Competitive News Bot</h2>
+                <p class="demo-description">
+                    Stay ahead of your competition with real-time intelligence from 50+ news sources, 
+                    industry publications, and competitor websites. Get alerts the moment something important happens.
+                </p>
+                
+                <ul class="demo-features">
+                    <li><i class="fas fa-check-circle"></i> Monitors 50+ news sources 24/7</li>
+                    <li><i class="fas fa-check-circle"></i> AI-powered relevance filtering</li>
+                    <li><i class="fas fa-check-circle"></i> Instant mobile notifications</li>
+                    <li><i class="fas fa-check-circle"></i> Competitor website monitoring</li>
+                    <li><i class="fas fa-check-circle"></i> Industry trend analysis</li>
+                </ul>
+                
+                <div class="hero-actions">
+                    <a href="index.html#workflow" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Get Started
+                    </a>
+                    <a href="#gap-finder" class="btn btn-secondary">
+                        <i class="fas fa-arrow-down"></i>
+                        Next Bot
+                    </a>
+                </div>
+            </div>
+            
+            <div class="demo-visual">
+                <div class="mock-interface">
+                    <div class="mock-header">
+                        <span class="mock-title">Competitive News Bot</span>
+                        <span class="mock-status">● ACTIVE</span>
+                    </div>
+                    
+                    <div class="mock-alert">
+                        <div class="mock-alert-title">🚨 URGENT: Competitor Alert</div>
+                        <div class="mock-data">
+                            <strong>TechCorp announces $50M funding round</strong><br>
+                            Source: TechCrunch • 2 minutes ago<br>
+                            Impact: High • Relevance: 95%
+                        </div>
+                    </div>
+                    
+                    <div class="mock-data">
+                        <strong>Recent Intelligence:</strong><br>
+                        • Competitor X launched new product line<br>
+                        • Industry regulation changes detected<br>
+                        • Market sentiment shift identified<br>
+                        • 3 new patents filed by competitors<br>
+                        <br>
+                        <strong>Delivery Methods:</strong><br>
+                        ✓ Mobile push notification sent<br>
+                        ✓ Email digest scheduled<br>
+                        ✓ Slack message posted<br>
+                        ✓ Chrome extension updated
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gap Finder Bot Demo -->
+    <section id="gap-finder" class="bot-demo-section">
+        <div class="demo-container reverse">
+            <div class="demo-visual">
+                <div class="mock-interface">
+                    <div class="mock-header">
+                        <span class="mock-title">Gap Finder Bot</span>
+                        <span class="mock-status">● ANALYZING</span>
+                    </div>
+                    
+                    <div class="mock-alert">
+                        <div class="mock-alert-title">💡 OPPORTUNITY: Market Gap Detected</div>
+                        <div class="mock-data">
+                            <strong>Underserved Niche: AI-powered HR tools for SMBs</strong><br>
+                            Market Size: $2.3B • Competition: Low<br>
+                            Confidence: 87% • Trend: Growing
+                        </div>
+                    </div>
+                    
+                    <div class="mock-data">
+                        <strong>Analysis Sources:</strong><br>
+                        • 150+ data sources analyzed<br>
+                        • Google Trends integration<br>
+                        • Patent database scanning<br>
+                        • Social media sentiment<br>
+                        • Competitor gap analysis<br>
+                        <br>
+                        <strong>Actionable Insights:</strong><br>
+                        → Market entry strategy suggested<br>
+                        → Key features identified<br>
+                        → Pricing recommendations<br>
+                        → Target audience defined
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-content">
+                <h2>🔍 Gap Finder Bot</h2>
+                <p class="demo-description">
+                    Discover untapped market opportunities before your competitors do. Our AI analyzes 
+                    150+ data sources to identify profitable niches and underserved market segments.
+                </p>
+                
+                <ul class="demo-features">
+                    <li><i class="fas fa-check-circle"></i> Analyzes 150+ data sources</li>
+                    <li><i class="fas fa-check-circle"></i> Market size estimation</li>
+                    <li><i class="fas fa-check-circle"></i> Competition analysis</li>
+                    <li><i class="fas fa-check-circle"></i> Trend prediction</li>
+                    <li><i class="fas fa-check-circle"></i> Actionable recommendations</li>
+                </ul>
+                
+                <div class="hero-actions">
+                    <a href="index.html#workflow" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                        Find Opportunities
+                    </a>
+                    <a href="#tender-alert" class="btn btn-secondary">
+                        <i class="fas fa-arrow-down"></i>
+                        Next Bot
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tender Alert Bot Demo -->
+    <section id="tender-alert" class="bot-demo-section">
+        <div class="demo-container">
+            <div class="demo-content">
+                <h2>📋 Tender Alert Bot</h2>
+                <p class="demo-description">
+                    Never miss a business opportunity again. Our bot monitors government and private 
+                    sector tenders, RFPs, and procurement opportunities that match your criteria.
+                </p>
+                
+                <ul class="demo-features">
+                    <li><i class="fas fa-check-circle"></i> Government tender monitoring</li>
+                    <li><i class="fas fa-check-circle"></i> Private sector RFPs</li>
+                    <li><i class="fas fa-check-circle"></i> Custom criteria matching</li>
+                    <li><i class="fas fa-check-circle"></i> Deadline tracking</li>
+                    <li><i class="fas fa-check-circle"></i> Automated bid reminders</li>
+                </ul>
+                
+                <div class="hero-actions">
+                    <a href="index.html#workflow" class="btn btn-primary">
+                        <i class="fas fa-bell"></i>
+                        Set Up Alerts
+                    </a>
+                    <a href="#integrations" class="btn btn-secondary">
+                        <i class="fas fa-arrow-down"></i>
+                        See Integrations
+                    </a>
+                </div>
+            </div>
+            
+            <div class="demo-visual">
+                <div class="mock-interface">
+                    <div class="mock-header">
+                        <span class="mock-title">Tender Alert Bot</span>
+                        <span class="mock-status">● MONITORING</span>
+                    </div>
+                    
+                    <div class="mock-alert">
+                        <div class="mock-alert-title">🎯 NEW TENDER: Perfect Match</div>
+                        <div class="mock-data">
+                            <strong>IT Infrastructure Upgrade - City Council</strong><br>
+                            Value: $500K • Deadline: 15 days<br>
+                            Match Score: 94% • Competition: Medium
+                        </div>
+                    </div>
+                    
+                    <div class="mock-data">
+                        <strong>Active Monitoring:</strong><br>
+                        • 25 government portals<br>
+                        • 15 private sector sites<br>
+                        • Industry-specific platforms<br>
+                        • International opportunities<br>
+                        <br>
+                        <strong>Smart Features:</strong><br>
+                        ⏰ Deadline reminders set<br>
+                        📊 Competition analysis ready<br>
+                        📝 Bid template suggested<br>
+                        🔔 Team notifications sent
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Showcase -->
+    <section id="integrations" class="bot-demo-section">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">
+                How You Receive Intelligence
+            </h2>
+            <p style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+                Choose how and where you want to receive your AI-powered intelligence. 
+                Our bots work seamlessly with your existing workflow.
+            </p>
+        </div>
+        
+        <div class="integration-showcase">
+            <div class="integration-card">
+                <div class="integration-icon">📱</div>
+                <h3 class="integration-title">Mobile Notifications</h3>
+                <p class="integration-description">
+                    Instant push notifications on your phone. Never miss critical intelligence, 
+                    even when you're away from your desk.
+                </p>
+            </div>
+            
+            <div class="integration-card">
+                <div class="integration-icon">📧</div>
+                <h3 class="integration-title">Email Digests</h3>
+                <p class="integration-description">
+                    Daily, weekly, or custom email reports with all your intelligence 
+                    summarized and prioritized.
+                </p>
+            </div>
+            
+            <div class="integration-card">
+                <div class="integration-icon">💬</div>
+                <h3 class="integration-title">Slack Integration</h3>
+                <p class="integration-description">
+                    Get alerts directly in your team's Slack channels. 
+                    Share intelligence instantly with your team.
+                </p>
+            </div>
+            
+            <div class="integration-card">
+                <div class="integration-icon">🌐</div>
+                <h3 class="integration-title">Chrome Extension</h3>
+                <p class="integration-description">
+                    See relevant intelligence overlaid on any website you visit. 
+                    Context-aware insights while browsing.
+                </p>
+            </div>
+            
+            <div class="integration-card">
+                <div class="integration-icon">📊</div>
+                <h3 class="integration-title">Excel Export</h3>
+                <p class="integration-description">
+                    Export all your intelligence data to Excel for further analysis 
+                    and reporting to stakeholders.
+                </p>
+            </div>
+            
+            <div class="integration-card">
+                <div class="integration-icon">🔗</div>
+                <h3 class="integration-title">API Access</h3>
+                <p class="integration-description">
+                    Integrate directly with your existing systems using our REST API. 
+                    Full programmatic access to all intelligence.
+                </p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="index.html" class="btn btn-primary btn-large">
+                <i class="fas fa-rocket"></i>
+                Start Your Intelligence Journey
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--glass-bg); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); padding: 3rem 0; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Shadow Market Tracker</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                AI-powered business intelligence that actually works
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem;">
+                <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
+                <a href="terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                <a href="refund-policy.html" style="color: var(--text-secondary); text-decoration: none;">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
