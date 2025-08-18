@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Shadow Market Tracker</title>
+    <meta name="description" content="Choose the perfect plan for your business intelligence needs.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/cyberpunk.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .pricing-section {
+            padding: 8rem 0 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .pricing-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .pricing-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .pricing-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            transition: var(--transition-normal);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-purple);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .pricing-card.featured {
+            border-color: var(--primary-purple);
+            box-shadow: var(--shadow-glow);
+        }
+        
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-button);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .plan-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .plan-price .currency {
+            font-size: 1.5rem;
+            vertical-align: top;
+        }
+        
+        .plan-period {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .plan-features li i {
+            color: var(--text-success);
+            font-size: 1.1rem;
+        }
+        
+        .plan-cta {
+            width: 100%;
+        }
+        
+        .free-access {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #000;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 2rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-logo">🔍</span>
+                <span>Shadow Market Tracker</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="bot-showcase.html" class="nav-link">Bot Demo</a>
+                <a href="pricing.html" class="nav-link active">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="pricing-header">
+            <h1 class="pricing-title">Choose Your Intelligence Plan</h1>
+            <p class="pricing-subtitle">
+                Start with our Starter plan and scale as your business grows. 
+                All plans include access to our 3 AI bots powered by 150+ APIs.
+            </p>
+        </div>
+        
+        <div class="pricing-grid">
+            <!-- Starter Plan -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Starter</h3>
+                <p class="plan-description">Perfect for small businesses and entrepreneurs</p>
+                <div class="plan-price">
+                    <span class="currency">₹</span>699
+                </div>
+                <p class="plan-period">per month</p>
+                
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> 3 AI Bots (All Included)</li>
+                    <li><i class="fas fa-check-circle"></i> 50 alerts per month</li>
+                    <li><i class="fas fa-check-circle"></i> Email notifications</li>
+                    <li><i class="fas fa-check-circle"></i> Basic integrations</li>
+                    <li><i class="fas fa-check-circle"></i> Chrome extension access</li>
+                    <li><i class="fas fa-check-circle"></i> Weekly reports</li>
+                </ul>
+                
+                <button class="btn btn-secondary plan-cta">
+                    <i class="fas fa-rocket"></i>
+                    Start with Starter
+                </button>
+            </div>
+            
+            <!-- Professional Plan -->
+            <div class="pricing-card featured">
+                <h3 class="plan-name">Professional</h3>
+                <p class="plan-description">For growing businesses that need more intelligence</p>
+                <div class="plan-price">
+                    <span class="currency">₹</span>5,999
+                </div>
+                <p class="plan-period">per month</p>
+                
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> 3 AI Bots (All Included)</li>
+                    <li><i class="fas fa-check-circle"></i> 500 alerts per month</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time notifications</li>
+                    <li><i class="fas fa-check-circle"></i> Advanced integrations</li>
+                    <li><i class="fas fa-check-circle"></i> Slack & Teams integration</li>
+                    <li><i class="fas fa-check-circle"></i> API access</li>
+                    <li><i class="fas fa-check-circle"></i> Daily reports</li>
+                    <li><i class="fas fa-check-circle"></i> Priority support</li>
+                </ul>
+                
+                <button class="btn btn-primary plan-cta">
+                    <i class="fas fa-star"></i>
+                    Go Professional
+                </button>
+            </div>
+            
+            <!-- Enterprise Plan -->
+            <div class="pricing-card">
+                <h3 class="plan-name">Enterprise</h3>
+                <p class="plan-description">For large organizations with custom needs</p>
+                <div class="plan-price">
+                    <span class="currency">₹</span>29,999
+                </div>
+                <p class="plan-period">per month</p>
+                
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> 3 AI Bots (All Included)</li>
+                    <li><i class="fas fa-check-circle"></i> Unlimited alerts</li>
+                    <li><i class="fas fa-check-circle"></i> Custom integrations</li>
+                    <li><i class="fas fa-check-circle"></i> White-label options</li>
+                    <li><i class="fas fa-check-circle"></i> Dedicated account manager</li>
+                    <li><i class="fas fa-check-circle"></i> Custom reporting</li>
+                    <li><i class="fas fa-check-circle"></i> SLA guarantee</li>
+                    <li><i class="fas fa-check-circle"></i> 24/7 support</li>
+                </ul>
+                
+                <button class="btn btn-secondary plan-cta">
+                    <i class="fas fa-building"></i>
+                    Contact Sales
+                </button>
+            </div>
+        </div>
+        
+        <!-- Special Access Notice -->
+        <div class="free-access">
+            <h3 style="margin-bottom: 1rem;">🎉 Special Creator Access</h3>
+            <p style="margin-bottom: 1rem;">
+                <strong>tycoonsofdawn@gmail.com</strong> and <strong>pranavdev.businessai@gmail.com</strong> 
+                have full Enterprise access at no cost as the platform creators.
+            </p>
+            <p style="margin: 0;">
+                Sign in with your creator account to access all features immediately!
+            </p>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div style="margin-top: 5rem; text-align: center;">
+            <h2 style="color: var(--text-primary); margin-bottom: 2rem;">Frequently Asked Questions</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                <div style="background: var(--glass-bg); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem;">What's included in all plans?</h4>
+                    <p style="color: var(--text-secondary);">All plans include access to our 3 AI bots: Competitive News Bot, Gap Finder Bot, and Tender Alert Bot. The difference is in alert limits, integrations, and support level.</p>
+                </div>
+                
+                <div style="background: var(--glass-bg); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem;">How do the bots integrate with my workflow?</h4>
+                    <p style="color: var(--text-secondary);">Our bots can send alerts via email, Slack, mobile push notifications, or through our API. You choose how and when you want to receive intelligence.</p>
+                </div>
+                
+                <div style="background: var(--glass-bg); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                    <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Can I upgrade or downgrade anytime?</h4>
+                    <p style="color: var(--text-secondary);">Yes! You can change your plan anytime. Upgrades take effect immediately, and downgrades take effect at your next billing cycle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--glass-bg); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); padding: 3rem 0; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Shadow Market Tracker</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                AI-powered business intelligence that actually works
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem;">
+                <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
+                <a href="terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                <a href="refund-policy.html" style="color: var(--text-secondary); text-decoration: none;">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Plan selection handlers
+        document.querySelectorAll('.plan-cta').forEach(button => {
+            button.addEventListener('click', function() {
+                const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
+                alert(`🚀 ${planName} Plan Selected!\n\nThis would normally redirect to payment processing.\n\nFor now, sign in with tycoonsofdawn@gmail.com to get full access as the creator!`);
+            });
+        });
+    </script>
+</body>
+</html>
