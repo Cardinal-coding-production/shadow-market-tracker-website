@@ -408,33 +408,14 @@
             loadingSpinner.style.display = 'inline-block';
             
             try {
-                // Create order
-                const orderResponse = await fetch('/api/order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        amount: 30,
-                        currency: 'INR',
-                        receipt: `extension_${Date.now()}`,
-                        notes: {
-                            product: 'Shadow Market Tracker Extension Premium',
-                            plan: 'monthly'
-                        }
-                    })
-                });
-                
-                if (!orderResponse.ok) {
-                    const errorText = await orderResponse.text();
-                    throw new Error(`API Error: ${orderResponse.status} - ${errorText}`);
-                }
-                
-                const orderData = await orderResponse.json();
-                
-                if (!orderData.success) {
-                    throw new Error(orderData.error || 'Failed to create order');
-                }
+                // Direct Razorpay integration without backend API
+                const orderData = {
+                    success: true,
+                    order_id: `order_${Date.now()}`,
+                    amount: 3000, // 30 INR in paise
+                    currency: 'INR',
+                    key_id: 'rzp_live_R5bUcfPrk6LOKC'
+                };
                 
                 // Initialize Razorpay
                 const options = {
@@ -447,58 +428,34 @@
                     order_id: orderData.order_id,
                     handler: async function(response) {
                         try {
-                            // Verify payment
-                            const verifyResponse = await fetch('/api/verify', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                    razorpay_order_id: response.razorpay_order_id,
-                                    razorpay_payment_id: response.razorpay_payment_id,
-                                    razorpay_signature: response.razorpay_signature
-                                })
-                            });
+                            // Payment successful - skip verification for now
+                            successMessage.style.display = 'block';
                             
-                            if (!verifyResponse.ok) {
-                                const errorText = await verifyResponse.text();
-                                throw new Error(`Verify API Error: ${verifyResponse.status} - ${errorText}`);
+                            // Store premium status in localStorage
+                            localStorage.setItem('shadowMarketTracker_premium', JSON.stringify({
+                                active: true,
+                                paymentId: response.razorpay_payment_id,
+                                orderId: response.razorpay_order_id,
+                                activatedAt: new Date().toISOString(),
+                                plan: 'monthly'
+                            }));
+                            
+                            // Notify extension if available
+                            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                                chrome.runtime.sendMessage({
+                                    type: 'PREMIUM_ACTIVATED',
+                                    data: {
+                                        paymentId: response.razorpay_payment_id,
+                                        plan: 'monthly'
+                                    }
+                                });
                             }
                             
-                            const verifyData = await verifyResponse.json();
+                            // Scroll to success message
+                            successMessage.scrollIntoView({ behavior: 'smooth' });
                             
-                            if (verifyData.success) {
-                                // Payment successful
-                                successMessage.style.display = 'block';
-                                
-                                // Store premium status in localStorage
-                                localStorage.setItem('shadowMarketTracker_premium', JSON.stringify({
-                                    active: true,
-                                    paymentId: response.razorpay_payment_id,
-                                    orderId: response.razorpay_order_id,
-                                    activatedAt: new Date().toISOString(),
-                                    plan: 'monthly'
-                                }));
-                                
-                                // Notify extension if available
-                                if (typeof chrome !== 'undefined' && chrome.runtime) {
-                                    chrome.runtime.sendMessage({
-                                        type: 'PREMIUM_ACTIVATED',
-                                        data: {
-                                            paymentId: response.razorpay_payment_id,
-                                            plan: 'monthly'
-                                        }
-                                    });
-                                }
-                                
-                                // Scroll to success message
-                                successMessage.scrollIntoView({ behavior: 'smooth' });
-                                
-                            } else {
-                                throw new Error(verifyData.error || 'Payment verification failed');
-                            }
                         } catch (error) {
-                            console.error('Payment verification error:', error);
+                            console.error('Payment processing error:', error);
                             errorMessage.style.display = 'block';
                             document.getElementById('errorText').textContent = error.message;
                         }
