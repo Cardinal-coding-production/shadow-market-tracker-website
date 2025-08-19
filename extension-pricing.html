@@ -408,23 +408,30 @@
             loadingSpinner.style.display = 'inline-block';
             
             try {
-                // Use test mode for now
-                const orderData = {
-                    success: true,
-                    order_id: `order_${Math.random().toString(36).substring(2, 15)}`,
-                    amount: 3000, // 30 INR in paise
-                    currency: 'INR',
-                    key_id: 'rzp_test_9WzaABVXvXjPwp' // Test key
-                };
+                // Call backend to create order
+                const orderResponse = await fetch('/api/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ amount: 30 })
+                });
+                
+                if (!orderResponse.ok) {
+                    throw new Error(`Failed to create order: ${orderResponse.status}`);
+                }
+                
+                const orderData = await orderResponse.json();
                 
                 // Initialize Razorpay
                 const options = {
                     key: orderData.key_id,
-                    amount: orderData.amount,
-                    currency: orderData.currency,
+                    amount: 3000,
+                    currency: 'INR',
                     name: 'Shadow Market Tracker',
                     description: 'Premium Extension Access - Monthly',
                     image: 'https://shadow-market-tracker-website.vercel.app/icon128.png',
+                    order_id: orderData.order_id,
                     handler: async function(response) {
                         try {
                             // Payment successful - skip verification for now
