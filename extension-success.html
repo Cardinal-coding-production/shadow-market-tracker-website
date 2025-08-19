@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Shadow Market Tracker Extension</title>
+    <meta name="description" content="Your premium extension access has been activated successfully!">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/cyberpunk.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .success-section {
+            padding: 8rem 0 5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .success-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--text-success);
+            border-radius: 20px;
+            padding: 4rem 3rem;
+            position: relative;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+        
+        .success-icon {
+            font-size: 5rem;
+            color: var(--text-success);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .success-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .success-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+        
+        .next-steps {
+            background: var(--glass-bg-light);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: left;
+        }
+        
+        .next-steps h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--glass-bg);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .step-number {
+            background: var(--gradient-button);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-content p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 3rem 2rem;
+            }
+            
+            .success-title {
+                font-size: 2rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-logo">🔍</span>
+                <span>Shadow Market Tracker</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="bot-showcase.html" class="nav-link">Bot Demo</a>
+                <a href="pricing.html" class="nav-link">Platform Pricing</a>
+                <a href="extension-pricing.html" class="nav-link">Extension</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Success Section -->
+    <section class="success-section">
+        <div class="success-card">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h1 class="success-title">Payment Successful!</h1>
+            <p class="success-subtitle">
+                🎉 Your premium extension access has been activated. 
+                You now have full access to all premium features!
+            </p>
+            
+            <div class="next-steps">
+                <h3><i class="fas fa-rocket"></i> Next Steps</h3>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Refresh Your Extension</h4>
+                        <p>Click the extension icon in your browser and refresh to activate premium features</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Start Browsing</h4>
+                        <p>Visit any website and watch as AI analyzes content and generates business opportunities</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Explore Premium Features</h4>
+                        <p>Access advanced analytics, unlimited insights, and premium API integrations</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="chrome-extension://your-extension-id/popup.html" class="btn btn-primary btn-large">
+                    <i class="fas fa-puzzle-piece"></i>
+                    Open Extension
+                </a>
+                <a href="index.html" class="btn btn-secondary btn-large">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+        
+        <!-- Support Section -->
+        <div style="margin-top: 4rem; background: var(--glass-bg); padding: 2rem; border-radius: 16px; border: 1px solid var(--glass-border);">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Need Help?</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                If you're having trouble accessing premium features or need assistance, we're here to help!
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="mailto:support@shadowmarkettracker.com" class="btn btn-secondary">
+                    <i class="fas fa-envelope"></i>
+                    Email Support
+                </a>
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-question-circle"></i>
+                    FAQ
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--glass-bg); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); padding: 3rem 0; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Shadow Market Tracker</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                AI-powered business intelligence that actually works
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
+                <a href="terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                <a href="refund-policy.html" style="color: var(--text-secondary); text-decoration: none;">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Auto-redirect to extension after 10 seconds
+        setTimeout(function() {
+            const extensionLink = document.querySelector('a[href*="chrome-extension"]');
+            if (extensionLink && confirm('Would you like to open the extension now?')) {
+                extensionLink.click();
+            }
+        }, 10000);
+    </script>
+</body>
+</html>

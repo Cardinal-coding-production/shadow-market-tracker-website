@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Pricing - Shadow Market Tracker</title>
+    <meta name="description" content="Unlock premium features for Shadow Market Tracker Chrome Extension - ₹30/month">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/cyberpunk.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <style>
+        .extension-pricing-section {
+            padding: 8rem 0 5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .extension-hero {
+            margin-bottom: 4rem;
+        }
+        
+        .extension-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        
+        .extension-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .extension-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--primary-purple);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+            box-shadow: var(--shadow-glow);
+            margin-bottom: 3rem;
+        }
+        
+        .extension-card::before {
+            content: '🚀 PREMIUM EXTENSION';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-button);
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .price-display {
+            margin: 2rem 0;
+        }
+        
+        .price-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--text-accent);
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        
+        .price-currency {
+            font-size: 2rem;
+            vertical-align: top;
+        }
+        
+        .price-period {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-item {
+            background: var(--glass-bg-light);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: var(--transition-normal);
+        }
+        
+        .feature-item:hover {
+            border-color: var(--primary-purple);
+            transform: translateY(-3px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--text-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .payment-button {
+            background: var(--gradient-button);
+            color: var(--text-primary);
+            border: none;
+            padding: 1.2rem 3rem;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            box-shadow: var(--shadow-button);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-button:hover {
+            background: var(--gradient-button-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.6);
+        }
+        
+        .payment-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .security-badge i {
+            color: var(--text-success);
+        }
+        
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            display: none;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .extension-title {
+                font-size: 2.5rem;
+            }
+            
+            .price-amount {
+                font-size: 3rem;
+            }
+            
+            .extension-card {
+                padding: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <span class="nav-logo">🔍</span>
+                <span>Shadow Market Tracker</span>
+            </a>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="bot-showcase.html" class="nav-link">Bot Demo</a>
+                <a href="pricing.html" class="nav-link">Platform Pricing</a>
+                <a href="extension-pricing.html" class="nav-link active">Extension</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Extension Pricing Section -->
+    <section class="extension-pricing-section">
+        <div class="extension-hero">
+            <h1 class="extension-title">Premium Extension</h1>
+            <p class="extension-subtitle">
+                Unlock the full power of Shadow Market Tracker directly in your browser. 
+                Get real-time business intelligence on every webpage you visit.
+            </p>
+        </div>
+        
+        <div class="extension-card">
+            <div class="price-display">
+                <div class="price-amount">
+                    <span class="price-currency">₹</span>30
+                </div>
+                <div class="price-period">per month</div>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🤖</div>
+                    <div class="feature-title">AI-Powered Analysis</div>
+                    <div class="feature-desc">Real-time content analysis with advanced AI algorithms</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <div class="feature-title">Business Opportunities</div>
+                    <div class="feature-desc">Instant business idea generation from any webpage</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Market Insights</div>
+                    <div class="feature-desc">Deep market analysis and trend detection</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Instant Alerts</div>
+                    <div class="feature-desc">Real-time notifications for market opportunities</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Premium APIs</div>
+                    <div class="feature-desc">Access to 150+ premium data sources</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Advanced Analytics</div>
+                    <div class="feature-desc">Detailed reports and performance metrics</div>
+                </div>
+            </div>
+            
+            <button id="paymentBtn" class="payment-button">
+                <span id="buttonText">
+                    <i class="fas fa-crown"></i>
+                    Upgrade to Premium
+                </span>
+                <div id="loadingSpinner" class="loading-spinner"></div>
+            </button>
+            
+            <div class="security-badges">
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure Payment</span>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>256-bit SSL</span>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Razorpay Protected</span>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-undo"></i>
+                    <span>Cancel Anytime</span>
+                </div>
+            </div>
+        </div>
+        
+        <div id="successMessage" class="success-message">
+            <h3><i class="fas fa-check-circle"></i> Payment Successful!</h3>
+            <p>Your premium extension access has been activated. Refresh your extension to access all premium features.</p>
+        </div>
+        
+        <div id="errorMessage" class="error-message">
+            <h3><i class="fas fa-exclamation-triangle"></i> Payment Failed</h3>
+            <p id="errorText">Something went wrong. Please try again or contact support.</p>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div style="margin-top: 5rem; text-align: left; max-width: 700px; margin-left: auto; margin-right: auto;">
+            <h2 style="color: var(--text-primary); margin-bottom: 2rem; text-align: center;">Frequently Asked Questions</h2>
+            
+            <div style="background: var(--glass-bg); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                <h4 style="color: var(--text-primary); margin-bottom: 1rem;">How does the extension work?</h4>
+                <p style="color: var(--text-secondary);">The extension automatically analyzes every webpage you visit, providing real-time business insights, market opportunities, and AI-generated business ideas directly in your browser.</p>
+            </div>
+            
+            <div style="background: var(--glass-bg); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Can I cancel anytime?</h4>
+                <p style="color: var(--text-secondary);">Yes! You can cancel your subscription at any time. Your premium access will continue until the end of your current billing period.</p>
+            </div>
+            
+            <div style="background: var(--glass-bg); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Is my data secure?</h4>
+                <p style="color: var(--text-secondary);">Absolutely. We use enterprise-grade security, 256-bit SSL encryption, and never store sensitive personal information. All payments are processed securely through Razorpay.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--glass-bg); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); padding: 3rem 0; margin-top: 5rem;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Shadow Market Tracker</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                AI-powered business intelligence that actually works
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none;">Privacy Policy</a>
+                <a href="terms.html" style="color: var(--text-secondary); text-decoration: none;">Terms of Service</a>
+                <a href="refund-policy.html" style="color: var(--text-secondary); text-decoration: none;">Refund Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Payment handling
+        document.getElementById('paymentBtn').addEventListener('click', async function() {
+            const button = this;
+            const buttonText = document.getElementById('buttonText');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Reset messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Show loading state
+            button.disabled = true;
+            buttonText.style.display = 'none';
+            loadingSpinner.style.display = 'inline-block';
+            
+            try {
+                // Create order
+                const orderResponse = await fetch('https://shadow-market-tracker-website.vercel.app/api/order.js', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        amount: 30,
+                        currency: 'INR',
+                        receipt: `extension_${Date.now()}`,
+                        notes: {
+                            product: 'Shadow Market Tracker Extension Premium',
+                            plan: 'monthly'
+                        }
+                    })
+                });
+                
+                const orderData = await orderResponse.json();
+                
+                if (!orderData.success) {
+                    throw new Error(orderData.error || 'Failed to create order');
+                }
+                
+                // Initialize Razorpay
+                const options = {
+                    key: orderData.key_id,
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: 'Shadow Market Tracker',
+                    description: 'Premium Extension Access - Monthly',
+                    image: 'https://your-domain.com/icon128.png',
+                    order_id: orderData.order_id,
+                    handler: async function(response) {
+                        try {
+                            // Verify payment
+                            const verifyResponse = await fetch('https://shadow-market-tracker-website.vercel.app/api/verify.js', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature
+                                })
+                            });
+                            
+                            const verifyData = await verifyResponse.json();
+                            
+                            if (verifyData.success) {
+                                // Payment successful
+                                successMessage.style.display = 'block';
+                                
+                                // Store premium status in localStorage
+                                localStorage.setItem('shadowMarketTracker_premium', JSON.stringify({
+                                    active: true,
+                                    paymentId: response.razorpay_payment_id,
+                                    orderId: response.razorpay_order_id,
+                                    activatedAt: new Date().toISOString(),
+                                    plan: 'monthly'
+                                }));
+                                
+                                // Notify extension if available
+                                if (typeof chrome !== 'undefined' && chrome.runtime) {
+                                    chrome.runtime.sendMessage({
+                                        type: 'PREMIUM_ACTIVATED',
+                                        data: {
+                                            paymentId: response.razorpay_payment_id,
+                                            plan: 'monthly'
+                                        }
+                                    });
+                                }
+                                
+                                // Scroll to success message
+                                successMessage.scrollIntoView({ behavior: 'smooth' });
+                                
+                            } else {
+                                throw new Error(verifyData.error || 'Payment verification failed');
+                            }
+                        } catch (error) {
+                            console.error('Payment verification error:', error);
+                            errorMessage.style.display = 'block';
+                            document.getElementById('errorText').textContent = error.message;
+                        }
+                    },
+                    prefill: {
+                        name: '',
+                        email: '',
+                        contact: ''
+                    },
+                    notes: {
+                        product: 'Shadow Market Tracker Extension Premium'
+                    },
+                    theme: {
+                        color: '#8b5cf6'
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            // Reset button state when modal is closed
+                            button.disabled = false;
+                            buttonText.style.display = 'inline';
+                            loadingSpinner.style.display = 'none';
+                        }
+                    }
+                };
+                
+                const rzp = new Razorpay(options);
+                
+                rzp.on('payment.failed', function(response) {
+                    console.error('Payment failed:', response.error);
+                    errorMessage.style.display = 'block';
+                    document.getElementById('errorText').textContent = 
+                        response.error.description || 'Payment failed. Please try again.';
+                    
+                    // Reset button state
+                    button.disabled = false;
+                    buttonText.style.display = 'inline';
+                    loadingSpinner.style.display = 'none';
+                });
+                
+                // Reset button state and open payment modal
+                button.disabled = false;
+                buttonText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+                
+                rzp.open();
+                
+            } catch (error) {
+                console.error('Order creation error:', error);
+                errorMessage.style.display = 'block';
+                document.getElementById('errorText').textContent = error.message;
+                
+                // Reset button state
+                button.disabled = false;
+                buttonText.style.display = 'inline';
+                loadingSpinner.style.display = 'none';
+            }
+        });
+        
+        // Check if user already has premium access
+        window.addEventListener('load', function() {
+            // Check if user came from first install
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('source') === 'first_install') {
+                const welcomeMessage = document.createElement('div');
+                welcomeMessage.className = 'welcome-message bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-lg p-4 mb-4';
+                welcomeMessage.innerHTML = `
+                    <div class="text-center">
+                        <h3 class="text-lg font-bold text-white mb-2">🎉 Welcome to Shadow Market Tracker!</h3>
+                        <p class="text-sm text-white/80">Thanks for installing our extension. Upgrade to premium to unlock all powerful features!</p>
+                    </div>
+                `;
+                
+                const container = document.querySelector('.extension-pricing-section');
+                if (container) {
+                    container.insertBefore(welcomeMessage, container.firstChild);
+                }
+            }
+
+            const premiumStatus = localStorage.getItem('shadowMarketTracker_premium');
+            if (premiumStatus) {
+                try {
+                    const status = JSON.parse(premiumStatus);
+                    if (status.active) {
+                        const button = document.getElementById('paymentBtn');
+                        const buttonText = document.getElementById('buttonText');
+                        
+                        button.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                        buttonText.innerHTML = '<i class="fas fa-check-circle"></i> Premium Active';
+                        button.disabled = true;
+                        
+                        // Show success message
+                        document.getElementById('successMessage').style.display = 'block';
+                    }
+                } catch (e) {
+                    console.error('Error parsing premium status:', e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
