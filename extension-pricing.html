@@ -408,13 +408,13 @@
             loadingSpinner.style.display = 'inline-block';
             
             try {
-                // Direct Razorpay integration without backend API
+                // Use test mode for now
                 const orderData = {
                     success: true,
-                    order_id: `order_${Date.now()}`,
+                    order_id: `order_${Math.random().toString(36).substring(2, 15)}`,
                     amount: 3000, // 30 INR in paise
                     currency: 'INR',
-                    key_id: 'rzp_live_R5bUcfPrk6LOKC'
+                    key_id: 'rzp_test_9WzaABVXvXjPwp' // Test key
                 };
                 
                 // Initialize Razorpay
@@ -424,8 +424,7 @@
                     currency: orderData.currency,
                     name: 'Shadow Market Tracker',
                     description: 'Premium Extension Access - Monthly',
-                    image: 'https://your-domain.com/icon128.png',
-                    order_id: orderData.order_id,
+                    image: 'https://shadow-market-tracker-website.vercel.app/icon128.png',
                     handler: async function(response) {
                         try {
                             // Payment successful - skip verification for now
