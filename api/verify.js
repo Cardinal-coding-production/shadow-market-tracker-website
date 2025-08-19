@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  const crypto = require('crypto');
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -23,10 +22,14 @@ export default async function handler(req, res) {
       });
     }
 
+    // Use hardcoded key secret
+    const razorpayKeySecret = '60FxdU1hJh11gi2EuRDdfeAY';
+
     // Create signature for verification
+    const crypto = require('crypto');
     const body = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSignature = crypto
-      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .createHmac('sha256', razorpayKeySecret)
       .update(body.toString())
       .digest('hex');
 

@@ -1,5 +1,4 @@
 export default async function handler(req, res) {
-  const Razorpay = require('razorpay');
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -20,10 +19,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Amount is required' });
     }
 
+    // Use hardcoded keys since env vars might not be available
+    const razorpayKeyId = 'rzp_live_R5bUcfPrk6LOKC';
+    const razorpayKeySecret = '60FxdU1hJh11gi2EuRDdfeAY';
+
     // Initialize Razorpay
+    const Razorpay = require('razorpay');
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
+      key_id: razorpayKeyId,
+      key_secret: razorpayKeySecret,
     });
 
     // Create order
@@ -41,7 +45,7 @@ export default async function handler(req, res) {
       order_id: order.id,
       amount: order.amount,
       currency: order.currency,
-      key_id: process.env.RAZORPAY_KEY_ID
+      key_id: razorpayKeyId
     });
 
   } catch (error) {
