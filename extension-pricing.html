@@ -409,7 +409,7 @@
             
             try {
                 // Create order
-                const orderResponse = await fetch('https://shadow-market-tracker-website.vercel.app/api/order.js', {
+                const orderResponse = await fetch('/api/order', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -424,6 +424,11 @@
                         }
                     })
                 });
+                
+                if (!orderResponse.ok) {
+                    const errorText = await orderResponse.text();
+                    throw new Error(`API Error: ${orderResponse.status} - ${errorText}`);
+                }
                 
                 const orderData = await orderResponse.json();
                 
@@ -443,7 +448,7 @@
                     handler: async function(response) {
                         try {
                             // Verify payment
-                            const verifyResponse = await fetch('https://shadow-market-tracker-website.vercel.app/api/verify.js', {
+                            const verifyResponse = await fetch('/api/verify', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -454,6 +459,11 @@
                                     razorpay_signature: response.razorpay_signature
                                 })
                             });
+                            
+                            if (!verifyResponse.ok) {
+                                const errorText = await verifyResponse.text();
+                                throw new Error(`Verify API Error: ${verifyResponse.status} - ${errorText}`);
+                            }
                             
                             const verifyData = await verifyResponse.json();
                             

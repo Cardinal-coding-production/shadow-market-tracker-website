@@ -1,6 +1,5 @@
-const Razorpay = require('razorpay');
-
 export default async function handler(req, res) {
+  const Razorpay = require('razorpay');
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
