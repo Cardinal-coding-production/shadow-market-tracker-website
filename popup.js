@@ -142,7 +142,7 @@ class PopupManager {
 
         // Check usage limit before analysis
         if (!this.isPremium && !(await this.checkUsageLimit())) {
-            this.redirectToPricing('usage_limit');
+            chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html?source=usage_limit' });
             return;
         }
 
@@ -937,14 +937,6 @@ class PopupManager {
                         <span class="text-white/70">Cache results</span>
                         <input type="checkbox" id="cacheResults" class="rounded" checked>
                     </div>
-                    <div class="border-t border-white/20 pt-4 mt-4">
-                        <button id="resetUsage" class="w-full bg-red-500/20 hover:bg-red-500/30 px-4 py-2 rounded-lg text-sm transition-colors mb-2">
-                            Reset Usage Count (Debug)
-                        </button>
-                        <button id="showUsageInfo" class="w-full bg-yellow-500/20 hover:bg-yellow-500/30 px-4 py-2 rounded-lg text-sm transition-colors">
-                            Show Usage Info
-                        </button>
-                    </div>
                 </div>
                 <div class="flex gap-2 mt-6">
                     <button id="saveSettings" class="flex-1 bg-blue-500/20 hover:bg-blue-500/30 px-4 py-2 rounded-lg text-sm transition-colors">
@@ -978,19 +970,6 @@ class PopupManager {
             });
         });
 
-        // Debug functions
-        document.getElementById('resetUsage').addEventListener('click', async () => {
-            await chrome.storage.local.set({ usage_count: 0, usage_date: new Date().toDateString() });
-            alert('Usage count reset to 0');
-            console.log('🔄 Usage count reset');
-        });
-
-        document.getElementById('showUsageInfo').addEventListener('click', async () => {
-            const result = await chrome.storage.local.get(['usage_count', 'usage_date']);
-            alert(`Usage: ${result.usage_count || 0}/5\nDate: ${result.usage_date || 'Not set'}`);
-            console.log('📊 Usage info:', result);
-        });
-
         // Load current settings
         chrome.storage.local.get(['extension_settings'], (result) => {
             const settings = result.extension_settings || {};
@@ -1007,13 +986,6 @@ class PopupManager {
 
     async checkPremiumStatus() {
         try {
-            // Check if this is first time opening extension
-            const firstTime = await this.checkFirstTimeUser();
-            if (firstTime) {
-                this.redirectToPricing();
-                return;
-            }
-
             const premiumData = localStorage.getItem('shadowMarketTracker_premium');
             if (premiumData) {
                 const status = JSON.parse(premiumData);
@@ -1022,14 +994,89 @@ class PopupManager {
                 if (this.isPremium) {
                     this.showPremiumStatus();
                 } else {
-                    await this.showUpgradePrompt();
+                    await this.showUsageLimitStatus();
                 }
             } else {
-                await this.showUpgradePrompt();
+                await this.showUsageLimitStatus();
             }
         } catch (error) {
             console.error('Failed to check premium status:', error);
-            this.showUpgradePrompt();
+            await this.showUsageLimitStatus();
+        }
+    }
+
+    async showUsageLimitStatus() {
+        const result = await chrome.storage.local.get(['usage_count', 'usage_date']);
+        const today = new Date().toDateString();
+        
+        if (result.usage_date !== today) {
+            await chrome.storage.local.set({ usage_count: 0, usage_date: today });
+            result.usage_count = 0;
+        }
+        
+        const usageCount = result.usage_count || 0;
+        const remainingUses = Math.max(0, 5 - usageCount);
+        
+        if (remainingUses === 0) {
+            this.showLimitReached();
+        } else {
+            this.showUsageCounter(remainingUses, usageCount);
+        }
+    }
+
+    showUsageCounter(remainingUses, usageCount) {
+        const statusElement = document.createElement('div');
+        statusElement.className = 'usage-status bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg p-3 mb-4';
+        statusElement.innerHTML = `
+            <div class="text-center">
+                <div class="text-sm font-medium text-white mb-2">🆓 Free Trial</div>
+                <div class="text-lg font-bold text-blue-300">${remainingUses}/5 analyses remaining</div>
+                <div class="text-xs text-white/70 mb-3">Resets daily • Upgrade for unlimited access</div>
+                <button id="upgradeBtn" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-200">
+                    Upgrade to Premium - ₹30/month
+                </button>
+            </div>
+        `;
+        
+        const container = document.querySelector('.p-4');
+        if (container) {
+            container.insertBefore(statusElement, container.firstChild);
+            
+            document.getElementById('upgradeBtn').addEventListener('click', () => {
+                chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html' });
+            });
+        }
+    }
+
+    showLimitReached() {
+        const statusElement = document.createElement('div');
+        statusElement.className = 'limit-reached bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30 rounded-lg p-3 mb-4';
+        statusElement.innerHTML = `
+            <div class="text-center">
+                <div class="text-sm font-medium text-red-300 mb-2">🚫 Daily Limit Reached</div>
+                <div class="text-lg font-bold text-red-300">0/5 analyses remaining</div>
+                <div class="text-xs text-white/70 mb-3">Upgrade now for unlimited daily access</div>
+                <button id="upgradeLimitBtn" class="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-200">
+                    Upgrade Now - ₹30/month
+                </button>
+            </div>
+        `;
+        
+        const container = document.querySelector('.p-4');
+        if (container) {
+            container.insertBefore(statusElement, container.firstChild);
+            
+            document.getElementById('upgradeLimitBtn').addEventListener('click', () => {
+                chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html?source=limit_reached' });
+            });
+        }
+        
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        if (analyzeBtn) {
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = '🚫 Daily Limit Reached';
+            analyzeBtn.style.background = '#6b7280';
+            analyzeBtn.style.cursor = 'not-allowed';
         }
     }
 
@@ -1049,7 +1096,6 @@ class PopupManager {
 
     redirectToPricing(source = 'first_install') {
         const url = `https://shadowmarkettracker.com/extension-pricing.html?source=${source}`;
-        console.log(`🚀 Redirecting to pricing: ${url}`);
         chrome.tabs.create({ url });
         window.close();
     }
@@ -1059,22 +1105,17 @@ class PopupManager {
             const result = await chrome.storage.local.get(['usage_count', 'usage_date']);
             const today = new Date().toDateString();
             
-            console.log('🔍 Checking usage limit:', { current: result.usage_count || 0, date: result.usage_date, today });
-            
             // Reset count if it's a new day
             if (result.usage_date !== today) {
                 await chrome.storage.local.set({ 
                     usage_count: 0, 
                     usage_date: today 
                 });
-                console.log('📅 Reset usage count for new day');
                 return true;
             }
             
             const usageCount = result.usage_count || 0;
-            const canUse = usageCount < 5;
-            console.log(`📊 Usage check: ${usageCount}/5 uses, can use: ${canUse}`);
-            return canUse;
+            return usageCount < 5; // Allow 5 free uses
         } catch (error) {
             console.error('Failed to check usage limit:', error);
             return true; // Allow on error
@@ -1087,12 +1128,9 @@ class PopupManager {
             const newCount = (result.usage_count || 0) + 1;
             await chrome.storage.local.set({ usage_count: newCount });
             
-            console.log(`📈 Usage incremented to: ${newCount}/5`);
-            
             // Show usage warning at 4 uses
             if (newCount === 4) {
-                console.log('⚠️ Showing usage warning at 4th use');
-                setTimeout(() => this.showUsageWarning(), 1000); // Delay to ensure UI is ready
+                this.showUsageWarning();
             }
         } catch (error) {
             console.error('Failed to increment usage:', error);
