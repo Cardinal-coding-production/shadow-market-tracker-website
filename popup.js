@@ -25,8 +25,8 @@ class PopupManager {
             // Set up event listeners
             this.setupEventListeners();
 
-            // Check premium status
-            await this.checkPremiumStatus();
+            // Update usage status
+            await this.updateUsageStatus();
 
             // Initialize UI
             await this.initializeUI();
@@ -85,6 +85,7 @@ class PopupManager {
         document.getElementById('retryBtn').addEventListener('click', () => this.analyzePage());
         document.getElementById('settingsBtn').addEventListener('click', () => this.showSettings());
         document.getElementById('testConnectionBtn').addEventListener('click', () => this.testConnection());
+        document.getElementById('upgradeBtn').addEventListener('click', () => this.openPricingPage());
         
         // Navigation button styling
         const navButtons = document.querySelectorAll('.nav-btn');
@@ -140,21 +141,25 @@ class PopupManager {
         async analyzePage() {
         if (this.isAnalyzing) return;
 
-        // Usage limit is now handled by background script
-        // The background script will return an error if limit is reached
+        // Check usage limit first
+        const usageStatus = await this.getUsageStatus();
+        if (usageStatus.remaining <= 0 && !usageStatus.isPremium) {
+            this.showLimitReached();
+            return;
+        }
 
         this.isAnalyzing = true;
         this.showLoading();
 
         try {
-            // Check if currentTab exists
             if (!this.currentTab || !this.currentTab.url) {
                 throw new Error('No active tab found');
             }
 
-            // Usage count is now handled by background script
+            // Increment usage count
+            await this.incrementUsage();
 
-            // Request analysis from background script using the scan action
+            // Request analysis from background script
             const response = await this.sendMessageWithRetry({
                 action: 'scan',
                 url: this.currentTab.url,
@@ -162,43 +167,26 @@ class PopupManager {
                 tabId: this.currentTab.id
             });
 
-            // Check for chrome.runtime.lastError
             if (chrome.runtime.lastError) {
                 throw new Error(`Runtime error: ${chrome.runtime.lastError.message}`);
             }
 
-            // Add null guards
             if (!response) {
                 throw new Error('No response received from background script');
             }
 
             if (response.error) {
-                if (response.limitReached) {
-                    // Redirect to pricing page
-                    chrome.tabs.create({ url: response.upgradeUrl });
-                    return;
-                }
                 throw new Error(response.error);
             }
 
             this.currentAnalysis = response;
             this.displayAnalysis(response);
-
-            // Cache the result
             await this.cacheAnalysis(this.currentTab.url, response);
+            await this.updateUsageStatus();
 
         } catch (error) {
             console.error('Analysis failed:', error);
-            
-            // Check for specific Chrome runtime errors
-            if (chrome.runtime.lastError) {
-                console.error('Chrome runtime error:', chrome.runtime.lastError);
-                this.showError(`Chrome runtime error: ${chrome.runtime.lastError.message}`);
-            } else if (error.message.includes('No response received')) {
-                this.showError('Background script not responding. Please try refreshing the page and testing the connection first.');
-            } else {
-                this.showError(error.message || 'Analysis failed');
-            }
+            this.showError(error.message || 'Analysis failed');
         } finally {
             this.isAnalyzing = false;
         }
@@ -1222,6 +1210,83 @@ class PopupManager {
         } catch (error) {
             return '';
         }
+    }
+
+    async updateUsageStatus() {
+        const usageStatus = await this.getUsageStatus();
+        const counter = document.getElementById('usageCounter');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        
+        if (usageStatus.isPremium) {
+            counter.textContent = 'Premium - Unlimited';
+            counter.className = 'text-lg font-bold text-yellow-300';
+        } else {
+            counter.textContent = `${usageStatus.remaining}/5 analyses remaining`;
+            if (usageStatus.remaining <= 0) {
+                analyzeBtn.disabled = true;
+                analyzeBtn.innerHTML = '<span class="text-red-300">🚫 Limit Reached</span>';
+            }
+        }
+    }
+
+    async getUsageStatus() {
+        try {
+            const result = await chrome.storage.local.get(['pagesAnalyzedCount', 'lastResetMonth', 'isPremium']);
+            const currentMonth = new Date().getFullYear() + '-' + (new Date().getMonth() + 1);
+            
+            if (result.lastResetMonth !== currentMonth) {
+                await chrome.storage.local.set({
+                    pagesAnalyzedCount: 0,
+                    lastResetMonth: currentMonth
+                });
+                return { remaining: 5, isPremium: result.isPremium || false };
+            }
+            
+            const count = result.pagesAnalyzedCount || 0;
+            return {
+                remaining: Math.max(0, 5 - count),
+                isPremium: result.isPremium || false
+            };
+        } catch (error) {
+            console.error('Failed to get usage status:', error);
+            return { remaining: 5, isPremium: false };
+        }
+    }
+
+    async incrementUsage() {
+        try {
+            const result = await chrome.storage.local.get(['pagesAnalyzedCount']);
+            await chrome.storage.local.set({
+                pagesAnalyzedCount: (result.pagesAnalyzedCount || 0) + 1
+            });
+        } catch (error) {
+            console.error('Failed to increment usage:', error);
+        }
+    }
+
+    showLimitReached() {
+        const usageStatus = document.getElementById('usageStatus');
+        usageStatus.className = 'cyberpunk-card mb-4 border-red-500/50';
+        usageStatus.innerHTML = `
+            <div class="text-center">
+                <div class="text-sm font-medium text-red-300 mb-2">🚫 Monthly Limit Reached</div>
+                <div class="text-lg font-bold text-red-300">0/5 analyses remaining</div>
+                <div class="text-xs text-white/70 mb-3">Upgrade now for unlimited monthly access</div>
+                <button id="upgradeLimitBtn" class="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white text-sm font-medium py-2 px-4 rounded-lg transition-all duration-200">
+                    Upgrade Now - ₹30/month
+                </button>
+            </div>
+        `;
+        
+        document.getElementById('upgradeLimitBtn').addEventListener('click', () => this.openPricingPage());
+        
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        analyzeBtn.disabled = true;
+        analyzeBtn.innerHTML = '<span class="text-red-300">🚫 Limit Reached</span>';
+    }
+
+    openPricingPage() {
+        chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html' });
     }
 }
 
