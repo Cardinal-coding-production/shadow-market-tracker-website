@@ -408,14 +408,26 @@
             loadingSpinner.style.display = 'inline-block';
             
             try {
-                // Call backend to create order
-                const orderResponse = await fetch('/api/create-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ amount: 30 })
-                });
+                // Try deployed API first, fallback to localhost
+                let orderResponse;
+                try {
+                    orderResponse = await fetch('https://shadowmarkettracker.com/api/create-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ amount: 30 })
+                    });
+                } catch (e) {
+                    // Fallback to localhost
+                    orderResponse = await fetch('http://localhost:5000/api/create-order', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ amount: 30 })
+                    });
+                }
                 
                 if (!orderResponse.ok) {
                     throw new Error(`Failed to create order: ${orderResponse.status}`);

@@ -1,3 +1,5 @@
+import Razorpay from 'razorpay';
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -18,7 +20,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Amount is required' });
     }
 
-    const Razorpay = require('razorpay');
     const razorpay = new Razorpay({
       key_id: 'rzp_live_R5bUcfPrk6LOKC',
       key_secret: '60FxdU1hJh11gi2EuRDdfeAY',
