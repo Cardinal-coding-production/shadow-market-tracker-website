@@ -937,6 +937,14 @@ class PopupManager {
                         <span class="text-white/70">Cache results</span>
                         <input type="checkbox" id="cacheResults" class="rounded" checked>
                     </div>
+                    <div class="border-t border-white/20 pt-4 mt-4">
+                        <button id="resetUsage" class="w-full bg-red-500/20 hover:bg-red-500/30 px-4 py-2 rounded-lg text-sm transition-colors mb-2">
+                            Reset Usage Count (Debug)
+                        </button>
+                        <button id="showUsageInfo" class="w-full bg-yellow-500/20 hover:bg-yellow-500/30 px-4 py-2 rounded-lg text-sm transition-colors">
+                            Show Usage Info
+                        </button>
+                    </div>
                 </div>
                 <div class="flex gap-2 mt-6">
                     <button id="saveSettings" class="flex-1 bg-blue-500/20 hover:bg-blue-500/30 px-4 py-2 rounded-lg text-sm transition-colors">
@@ -968,6 +976,19 @@ class PopupManager {
                 console.log('Settings saved:', settings);
                 document.body.removeChild(settingsModal);
             });
+        });
+
+        // Debug functions
+        document.getElementById('resetUsage').addEventListener('click', async () => {
+            await chrome.storage.local.set({ usage_count: 0, usage_date: new Date().toDateString() });
+            alert('Usage count reset to 0');
+            console.log('🔄 Usage count reset');
+        });
+
+        document.getElementById('showUsageInfo').addEventListener('click', async () => {
+            const result = await chrome.storage.local.get(['usage_count', 'usage_date']);
+            alert(`Usage: ${result.usage_count || 0}/5\nDate: ${result.usage_date || 'Not set'}`);
+            console.log('📊 Usage info:', result);
         });
 
         // Load current settings
@@ -1027,7 +1048,8 @@ class PopupManager {
     }
 
     redirectToPricing(source = 'first_install') {
-        const url = `https://shadow-market-tracker-website.vercel.app/extension-pricing.html?source=${source}`;
+        const url = `https://shadowmarkettracker.com/extension-pricing.html?source=${source}`;
+        console.log(`🚀 Redirecting to pricing: ${url}`);
         chrome.tabs.create({ url });
         window.close();
     }
@@ -1037,17 +1059,22 @@ class PopupManager {
             const result = await chrome.storage.local.get(['usage_count', 'usage_date']);
             const today = new Date().toDateString();
             
+            console.log('🔍 Checking usage limit:', { current: result.usage_count || 0, date: result.usage_date, today });
+            
             // Reset count if it's a new day
             if (result.usage_date !== today) {
                 await chrome.storage.local.set({ 
                     usage_count: 0, 
                     usage_date: today 
                 });
+                console.log('📅 Reset usage count for new day');
                 return true;
             }
             
             const usageCount = result.usage_count || 0;
-            return usageCount < 5; // Allow 5 free uses
+            const canUse = usageCount < 5;
+            console.log(`📊 Usage check: ${usageCount}/5 uses, can use: ${canUse}`);
+            return canUse;
         } catch (error) {
             console.error('Failed to check usage limit:', error);
             return true; // Allow on error
@@ -1060,9 +1087,12 @@ class PopupManager {
             const newCount = (result.usage_count || 0) + 1;
             await chrome.storage.local.set({ usage_count: newCount });
             
+            console.log(`📈 Usage incremented to: ${newCount}/5`);
+            
             // Show usage warning at 4 uses
             if (newCount === 4) {
-                this.showUsageWarning();
+                console.log('⚠️ Showing usage warning at 4th use');
+                setTimeout(() => this.showUsageWarning(), 1000); // Delay to ensure UI is ready
             }
         } catch (error) {
             console.error('Failed to increment usage:', error);
@@ -1087,7 +1117,7 @@ class PopupManager {
             container.insertBefore(warningElement, container.firstChild);
             
             document.getElementById('warningUpgradeBtn').addEventListener('click', () => {
-                chrome.tabs.create({ url: 'https://shadow-market-tracker-website.vercel.app/extension-pricing.html?source=usage_warning' });
+                chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html?source=usage_warning' });
             });
         }
     }
@@ -1134,7 +1164,7 @@ class PopupManager {
             
             // Add click handler for upgrade button
             document.getElementById('upgradeBtn').addEventListener('click', () => {
-                chrome.tabs.create({ url: 'https://shadow-market-tracker-website.vercel.app/extension-pricing.html' });
+                chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html' });
             });
         }
     }
