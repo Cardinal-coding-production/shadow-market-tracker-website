@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Shadow Market Tracker",
+  "version": "1.0.0",
+  "description": "AI-powered business intelligence extension that transforms web browsing into actionable market insights. Powered by 150+ APIs for real-time competitive analysis.",
+  "author": "Pranav Dev",
+  "homepage_url": "https://cardinal-coding-production.github.io/shadow-market-tracker-website/",
+  "action": {
+    "default_title": "Shadow Market Tracker",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "activeTab", 
+    "tabs", 
+    "scripting", 
+    "storage", 
+    "alarms",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://*.salesforce.com/*",
+    "https://*.hubspot.com/*",
+    "https://*.zoho.com/*",
+    "https://*.powerbi.com/*",
+    "https://*.tableau.com/*",
+    "https://*.monday.com/*",
+    "https://*.pipedrive.com/*",
+    "https://*.slack.com/*",
+    "https://*.jira.com/*",
+    "<all_urls>"
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["*.js", "*.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
+  }
+}

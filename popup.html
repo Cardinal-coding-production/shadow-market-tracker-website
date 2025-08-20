@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Market Tracker</title>
+    <!-- Cyberpunk Theme CSS -->
+    <link rel="stylesheet" href="theme.css">
+    <!-- Inline styles for CSP compliance -->
+        <style>
+        /* Reset and base styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Override theme.css body for extension-specific styling */
+        body {
+            background: var(--bg-primary);
+            position: relative;
+        }
+
+        /* Cyberpunk background effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, var(--glow-primary) 0%, transparent 70%),
+                        radial-gradient(circle at 70% 30%, var(--glow-secondary) 0%, transparent 70%),
+                        radial-gradient(circle at 50% 10%, var(--glow-red) 0%, transparent 60%);
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Extension-specific overrides */
+        .main-container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Cyberpunk header glow */
+        .header-glow {
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            height: 1px;
+            box-shadow: 0 0 10px var(--glow-primary);
+        }
+        
+        /* Cyberpunk-specific animations */
+        .fade-in {
+            animation: cyberpunk-slide 0.5s ease-out;
+        }
+
+        /* Red accent glow effects */
+        .text-accent-red {
+            color: var(--accent-red);
+            text-shadow: 0 0 15px var(--glow-red-intense);
+        }
+
+        .score-glow.text-accent-red {
+            text-shadow: 0 0 20px var(--glow-red-intense), 0 0 40px var(--glow-red);
+        }
+
+        .pulse-effect {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        /* Score circle glow effect */
+        .score-glow {
+            filter: drop-shadow(0 0 10px var(--glow-primary));
+        }
+        
+        /* Cyberpunk Priority Classes */
+        .priority-high {
+            background: rgba(255, 51, 102, 0.2);
+            color: var(--status-error);
+            border-color: var(--status-error);
+            box-shadow: 0 0 8px rgba(255, 51, 102, 0.3);
+        }
+        .priority-medium {
+            background: rgba(255, 184, 0, 0.2);
+            color: var(--status-warning);
+            border-color: var(--status-warning);
+            box-shadow: 0 0 8px rgba(255, 184, 0, 0.3);
+        }
+        .priority-low {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--status-success);
+            border-color: var(--status-success);
+            box-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+        }
+        
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Utility classes */
+        .flex { display: flex; }
+        .flex-1 { flex: 1; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .space-x-1 > * + * { margin-left: 0.25rem; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-3 > * + * { margin-left: 0.75rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-8 { padding: 2rem; }
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-3 { margin-top: 0.75rem; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .w-2 { width: 0.5rem; }
+        .w-5 { width: 1.25rem; }
+        .w-8 { width: 2rem; }
+        .w-12 { width: 3rem; }
+        .w-full { width: 100%; }
+        .h-2 { height: 0.5rem; }
+        .h-3 { height: 0.75rem; }
+        .h-4 { height: 1rem; }
+        .h-5 { height: 1.25rem; }
+        .h-8 { height: 2rem; }
+        .h-12 { height: 3rem; }
+        .h-16 { height: 4rem; }
+        .h-20 { height: 5rem; }
+        .rounded { border-radius: 0.25rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-full { border-radius: 9999px; }
+        .border { border-width: 1px; }
+        .border-t { border-top-width: 1px; }
+        .border-b { border-bottom-width: 1px; }
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .text-center { text-align: center; }
+        .text-white { color: white; }
+        .bg-white { background-color: white; }
+        .bg-green-400 { background-color: #4ade80; }
+        .bg-red-500 { background-color: #ef4444; }
+        .overflow-y-auto { overflow-y: auto; }
+        .hidden { display: none; }
+        .opacity-50 { opacity: 0.5; }
+        .transition-colors { transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out; }
+        .transition-all { transition: all 0.15s ease-in-out; }
+        .duration-300 { transition-duration: 300ms; }
+        
+        /* Hover states */
+        button:hover { cursor: pointer; }
+        .hover\\:bg-white\\/10:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .hover\\:bg-white\\/30:hover { background-color: rgba(255, 255, 255, 0.3); }
+        .hover\\:bg-red-500\\/30:hover { background-color: rgba(239, 68, 68, 0.3); }
+        
+        /* Background colors with opacity */
+        .bg-white\\/10 { background-color: rgba(255, 255, 255, 0.1); }
+        .bg-white\\/20 { background-color: rgba(255, 255, 255, 0.2); }
+        .bg-white\\/30 { background-color: rgba(255, 255, 255, 0.3); }
+        .bg-red-500\\/20 { background-color: rgba(239, 68, 68, 0.2); }
+        
+        /* Text colors with opacity */
+        .text-white\\/50 { color: rgba(255, 255, 255, 0.5); }
+        .text-white\\/70 { color: rgba(255, 255, 255, 0.7); }
+        .text-red-300 { color: #fca5a5; }
+        
+        /* Border colors with opacity */
+        .border-white\\/20 { border-color: rgba(255, 255, 255, 0.2); }
+        .border-red-400\\/30 { border-color: rgba(f87171, 0.3); }
+        
+        /* Width utilities */
+        .w-3\\/4 { width: 75%; }
+        
+        /* Animations */
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Custom component styles */
+        .nav-btn {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+        }
+        
+        /* Navigation styling handled by theme.css */
+        
+        .section {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .section.hidden {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+    </style>
+  </head>
+<body class="cyberpunk-bg text-secondary">
+    <div class="main-container">
+        <!-- Cyberpunk Header -->
+        <div class="glass p-4 border-b border-glass">
+            <div class="header-glow"></div>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 glass rounded-lg flex items-center justify-center pulse-glow">
+                    <svg class="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-semibold text-primary text-glow">Shadow Market Tracker</h1>
+                    <p class="text-sm text-muted">Cyberpunk Business Intelligence</p>
+                </div>
+            </div>
+            <button id="settingsBtn" class="btn-secondary p-2 rounded-lg">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="glass p-2">
+        <div class="flex space-x-1">
+            <button id="navHome" class="nav-btn active flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
+                Home
+            </button>
+            <button id="navTrends" class="nav-btn flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
+                Trends
+            </button>
+            <button id="navAlerts" class="nav-btn flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
+                Alerts
+            </button>
+            <button id="navAnalysis" class="nav-btn flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-colors">
+                Analysis
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 overflow-y-auto">
+        <!-- Home Section -->
+        <div id="homeSection" class="section active p-4 space-y-4">
+            <!-- Current Page Info -->
+            <div class="cyberpunk-card">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-lg font-semibold text-primary">Current Page</h2>
+                    <button id="analyzeBtn" class="btn-primary">
+                        <span class="text-glow">Analyze</span>
+                    </button>
+                </div>
+                <div id="pageInfo" class="space-y-2">
+                    <div class="skeleton h-4 bg-white/20 rounded"></div>
+                    <div class="skeleton h-3 bg-white/20 rounded w-3/4"></div>
+                </div>
+            </div>
+
+            <!-- Analysis Results -->
+            <div id="analysisResults" class="space-y-4 hidden">
+                <!-- Score Card -->
+                <div class="cyberpunk-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-semibold text-primary">Market Opportunity Score</h3>
+                        <span id="priorityBadge" class="status-badge"></span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-center">
+                            <div id="scoreValue" class="text-3xl font-bold text-accent-red text-glow score-glow">--</div>
+                            <div class="text-sm text-muted">Score</div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-secondary">Confidence</span>
+                                <span id="confidenceValue" class="text-accent">--%</span>
+                            </div>
+                            <div class="w-full bg-tertiary rounded-full h-2 relative overflow-hidden">
+                                <div id="confidenceBar" class="h-2 rounded-full transition-all duration-300 relative"
+                                     style="width: 0%; background: linear-gradient(90deg, var(--accent-secondary), var(--accent-primary)); box-shadow: 0 0 8px var(--glow-primary);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Business Ideas -->
+                <div class="cyberpunk-card">
+                    <h3 class="font-semibold mb-3 text-primary">💡 Business Ideas</h3>
+                    <div id="businessIdeas" class="space-y-3">
+                        <!-- Ideas will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Market Signals -->
+                <div class="cyberpunk-card">
+                    <h3 class="font-semibold mb-3 text-primary">📊 Market Signals</h3>
+                    <div id="marketSignals" class="space-y-2">
+                        <!-- Signals will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden">
+                <div class="cyberpunk-card text-center">
+                    <div class="w-8 h-8 border-2 border-accent-primary border-t-accent-hover rounded-full mx-auto mb-4 pulse-glow"
+                         style="animation: spin 1s linear infinite, pulse-glow 2s ease-in-out infinite;"></div>
+                    <p class="text-secondary">🔍 Analyzing page content...</p>
+                    <div id="progressText" class="text-sm text-muted mt-2">Extracting cyberpunk intelligence...</div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden">
+                <div class="cyberpunk-card border-error">
+                    <div class="flex items-center space-x-2 text-error">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        </svg>
+                        <span id="errorMessage" class="font-medium">⚠️ Analysis failed</span>
+                    </div>
+                    <button id="retryBtn" class="mt-3 status-error px-4 py-2 rounded-lg text-sm">
+                        🔄 Try Again
+                    </button>
+                </div>
+            </div>
+
+            <!-- Test Connection Button -->
+            <div class="cyberpunk-card">
+                <h3 class="font-semibold mb-3 text-primary">🔧 Debug Connection</h3>
+                <button id="testConnectionBtn" class="btn-secondary">
+                    🔗 Test Background Connection
+                </button>
+                <div id="connectionTestResult" class="mt-2 text-sm text-muted"></div>
+            </div>
+        </div>
+
+        <!-- Trends Section -->
+        <div id="trendsSection" class="section hidden p-4">
+            <div class="cyberpunk-card">
+                <h2 class="text-lg font-semibold mb-4 text-primary text-glow">📈 Market Trends</h2>
+                <div id="trendsContent" class="space-y-3">
+                    <!-- Dynamic trends content will be populated here -->
+                    <div class="text-center text-muted py-8">
+                        <div class="text-sm">🔮 Analyze a page to see relevant market trends</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        <div id="alertsSection" class="section hidden p-4">
+            <div class="cyberpunk-card">
+                <h2 class="text-lg font-semibold mb-4 text-primary text-glow">🚨 Market Alerts</h2>
+                <div id="alertsContent" class="space-y-3">
+                    <div class="cyberpunk-card border-error neon-flicker">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="text-error">🚨</span>
+                            <h4 class="font-medium text-primary">Competitor Launch</h4>
+                            <span class="status-error">High</span>
+                        </div>
+                        <p class="text-sm text-secondary">New product launching in Q2 2024</p>
+                    </div>
+                    <div class="cyberpunk-card border-warning">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="text-warning">⚠️</span>
+                            <h4 class="font-medium text-primary">Market Saturation</h4>
+                            <span class="status-warning">Medium</span>
+                        </div>
+                        <p class="text-sm text-secondary">Primary segment showing saturation signals</p>
+                    </div>
+                    <div class="cyberpunk-card border-info">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="text-accent">ℹ️</span>
+                            <h4 class="font-medium text-primary">Regulatory Update</h4>
+                            <span class="status-info">Low</span>
+                        </div>
+                        <p class="text-sm text-secondary">New requirements affecting industry</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Section -->
+        <div id="analysisSection" class="section hidden p-4">
+            <div class="cyberpunk-card">
+                <h2 class="text-lg font-semibold mb-4 text-primary text-glow">🧠 Detailed Analysis</h2>
+                <div id="analysisContent" class="space-y-4">
+                    <!-- Dynamic analysis content will be populated here -->
+                    <div class="text-center text-muted py-8">
+                        <div class="text-sm">🔬 Analyze a page to see detailed market analysis</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cyberpunk Footer -->
+    <div class="glass p-3 border-t border-glass">
+        <div class="flex items-center justify-between text-sm text-muted">
+            <span class="text-accent-red">v1.0.0 • CYBERPUNK</span>
+            <div class="flex items-center space-x-2">
+                <div id="connectionStatus" class="flex items-center space-x-1">
+                    <div class="w-2 h-2 rounded-full pulse-glow" style="background: var(--status-success); box-shadow: 0 0 6px var(--status-success);"></div>
+                    <span class="text-secondary">Neural Link Active</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>
+
