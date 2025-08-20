@@ -166,6 +166,51 @@ class BackgroundServiceWorker {
     this.init();
   }
 
+  // Usage tracking methods
+  async initializeUsageTracking() {
+    const result = await chrome.storage.local.get(['pagesAnalyzedCount', 'lastResetMonth']);
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    const monthKey = `${currentYear}-${currentMonth}`;
+    
+    // Reset counter if new month
+    if (result.lastResetMonth !== monthKey) {
+      await chrome.storage.local.set({
+        pagesAnalyzedCount: 0,
+        lastResetMonth: monthKey
+      });
+      this.debugLog('info', 'Monthly usage counter reset');
+    }
+    
+    // Initialize if not exists
+    if (result.pagesAnalyzedCount === undefined) {
+      await chrome.storage.local.set({ pagesAnalyzedCount: 0 });
+    }
+  }
+
+  async incrementUsageCount() {
+    const result = await chrome.storage.local.get(['pagesAnalyzedCount']);
+    const newCount = (result.pagesAnalyzedCount || 0) + 1;
+    await chrome.storage.local.set({ pagesAnalyzedCount: newCount });
+    this.debugLog('info', `Usage count: ${newCount}/5`);
+    return newCount;
+  }
+
+  async checkUsageLimit() {
+    const result = await chrome.storage.local.get(['pagesAnalyzedCount']);
+    const count = result.pagesAnalyzedCount || 0;
+    return count < 5;
+  }
+
+  async getUsageStatus() {
+    const result = await chrome.storage.local.get(['pagesAnalyzedCount', 'lastResetMonth']);
+    return {
+      count: result.pagesAnalyzedCount || 0,
+      remaining: Math.max(0, 5 - (result.pagesAnalyzedCount || 0)),
+      resetMonth: result.lastResetMonth
+    };
+  }
+
   async init() {
     try {
       this.debugLog('info', 'Starting background service worker initialization');
@@ -177,6 +222,9 @@ class BackgroundServiceWorker {
 
       // Log that we're starting initialization
       console.log('🚀 Shadow Market Tracker Background Script Starting...');
+      
+      // Initialize usage tracking
+      await this.initializeUsageTracking();
       
       // Log manifest permissions
       await this.logManifestPermissions();
@@ -479,21 +527,42 @@ class BackgroundServiceWorker {
         case 'scan':
           // Handle scan action from the React popup component
           try {
+            // Check usage limit first
+            const canAnalyze = await this.checkUsageLimit();
+            if (!canAnalyze) {
+              result = { 
+                error: 'Usage limit reached', 
+                limitReached: true,
+                upgradeUrl: 'https://shadowmarkettracker.com/extension-pricing.html?source=usage_limit'
+              };
+              break;
+            }
+            
             this.debugLog('info', 'Processing scan request', { 
               url: request.url, 
               title: request.title, 
               tabId: request.tabId 
             });
             
+            // Increment usage count
+            const newCount = await this.incrementUsageCount();
+            
             result = await this.analyzePage({
               url: request.url || sender?.tab?.url,
               title: request.title || sender?.tab?.title,
               tabId: request.tabId || sender?.tab?.id
             });
+            
+            // Add usage info to result
+            result.usageInfo = {
+              count: newCount,
+              remaining: Math.max(0, 5 - newCount)
+            };
 
             this.debugLog('info', 'Scan completed successfully', {
               hasAnalysis: !!result?.analysis,
-              hasResult: !!result?.result
+              hasResult: !!result?.result,
+              usageCount: newCount
             });
           } catch (error) {
             this.debugLog('error', 'Scan failed', { 
@@ -522,6 +591,16 @@ class BackgroundServiceWorker {
           
         case 'health_check':
           result = await this.performHealthCheck();
+          break;
+          
+        case 'get_usage_status':
+          result = await this.getUsageStatus();
+          break;
+          
+        case 'reset_usage_count':
+          // Debug function to reset usage count
+          await chrome.storage.local.set({ pagesAnalyzedCount: 0 });
+          result = { success: true, message: 'Usage count reset' };
           break;
           
         case 'get_debug_logs':

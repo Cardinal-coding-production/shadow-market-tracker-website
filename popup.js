@@ -140,11 +140,8 @@ class PopupManager {
         async analyzePage() {
         if (this.isAnalyzing) return;
 
-        // Check usage limit before analysis
-        if (!this.isPremium && !(await this.checkUsageLimit())) {
-            chrome.tabs.create({ url: 'https://shadowmarkettracker.com/extension-pricing.html?source=usage_limit' });
-            return;
-        }
+        // Usage limit is now handled by background script
+        // The background script will return an error if limit is reached
 
         this.isAnalyzing = true;
         this.showLoading();
@@ -155,10 +152,7 @@ class PopupManager {
                 throw new Error('No active tab found');
             }
 
-            // Increment usage count for non-premium users
-            if (!this.isPremium) {
-                await this.incrementUsage();
-            }
+            // Usage count is now handled by background script
 
             // Request analysis from background script using the scan action
             const response = await this.sendMessageWithRetry({
@@ -179,6 +173,11 @@ class PopupManager {
             }
 
             if (response.error) {
+                if (response.limitReached) {
+                    // Redirect to pricing page
+                    chrome.tabs.create({ url: response.upgradeUrl });
+                    return;
+                }
                 throw new Error(response.error);
             }
 
@@ -1006,21 +1005,20 @@ class PopupManager {
     }
 
     async showUsageLimitStatus() {
-        const result = await chrome.storage.local.get(['usage_count', 'usage_date']);
-        const today = new Date().toDateString();
-        
-        if (result.usage_date !== today) {
-            await chrome.storage.local.set({ usage_count: 0, usage_date: today });
-            result.usage_count = 0;
-        }
-        
-        const usageCount = result.usage_count || 0;
-        const remainingUses = Math.max(0, 5 - usageCount);
-        
-        if (remainingUses === 0) {
-            this.showLimitReached();
-        } else {
-            this.showUsageCounter(remainingUses, usageCount);
+        try {
+            const usageStatus = await this.sendMessageWithRetry({ action: 'get_usage_status' });
+            const remainingUses = usageStatus.remaining || 0;
+            const usageCount = usageStatus.count || 0;
+            
+            if (remainingUses === 0) {
+                this.showLimitReached();
+            } else {
+                this.showUsageCounter(remainingUses, usageCount);
+            }
+        } catch (error) {
+            console.error('Failed to get usage status:', error);
+            // Fallback to showing upgrade prompt
+            this.showUsageCounter(5, 0);
         }
     }
 
