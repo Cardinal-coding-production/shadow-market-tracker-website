@@ -5,5 +5,12 @@
       "src": "**/*.html",
       "use": "@vercel/static"
     }
+  ],
+  "functions": {},
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
   ]
 }
