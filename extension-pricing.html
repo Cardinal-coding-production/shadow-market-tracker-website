@@ -302,10 +302,16 @@
                 </div>
             </div>
             
+            <!-- DEMO NOTICE -->
+            <div style="background: rgba(255, 193, 7, 0.2); border: 1px solid #ffc107; border-radius: 8px; padding: 1rem; margin: 2rem 0; text-align: center;">
+                <h4 style="color: #ffc107; margin-bottom: 0.5rem;">⚠️ DEMO MODE</h4>
+                <p style="color: rgba(255, 255, 255, 0.8); font-size: 0.9rem;">This is a demo payment system for testing. No real payment is processed.</p>
+            </div>
+            
             <button id="paymentBtn" class="payment-button">
                 <span id="buttonText">
                     <i class="fas fa-crown"></i>
-                    Upgrade to Premium
+                    Try Demo Payment
                 </span>
                 <div id="loadingSpinner" class="loading-spinner"></div>
             </button>
@@ -320,8 +326,8 @@
                     <span>256-bit SSL</span>
                 </div>
                 <div class="security-badge">
-                    <i class="fas fa-credit-card"></i>
-                    <span>Demo Payment</span>
+                    <i class="fas fa-flask"></i>
+                    <span>Demo Only</span>
                 </div>
                 <div class="security-badge">
                     <i class="fas fa-undo"></i>
@@ -331,8 +337,8 @@
         </div>
         
         <div id="successMessage" class="success-message">
-            <h3><i class="fas fa-check-circle"></i> Payment Successful!</h3>
-            <p>Your premium extension access has been activated. Refresh your extension to access all premium features.</p>
+            <h3><i class="fas fa-check-circle"></i> Demo Payment Complete!</h3>
+            <p><strong>This was a demo payment - no real money was charged.</strong><br>Premium features are temporarily activated for testing purposes only.</p>
         </div>
         
         <div id="errorMessage" class="error-message">
@@ -352,8 +358,13 @@
     </footer>
 
     <script>
-        // FIXED: Working demo payment system - NO API calls
+        // DEMO PAYMENT SYSTEM - FOR TESTING ONLY
+        // This simulates a payment to test the premium flow without real payment processing
         document.getElementById('paymentBtn').addEventListener('click', function() {
+            // Show demo alert
+            if (!confirm('This is a DEMO payment system.\n\nNo real money will be charged.\n\nClick OK to simulate premium activation for testing.')) {
+                return;
+            }
             const button = this;
             const buttonText = document.getElementById('buttonText');
             const loadingSpinner = document.getElementById('loadingSpinner');
@@ -372,13 +383,14 @@
             // Demo payment processing (2 seconds)
             setTimeout(() => {
                 try {
-                    // Store premium status in localStorage
+                    // Store DEMO premium status in localStorage
                     const premiumData = {
                         active: true,
                         activatedAt: new Date().toISOString(),
-                        plan: 'monthly',
-                        paymentId: 'demo_' + Date.now(),
-                        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+                        plan: 'demo',
+                        paymentId: 'DEMO_' + Date.now(),
+                        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // 1 day demo
+                        isDemoMode: true
                     };
                     
                     localStorage.setItem('shadowMarketTracker_premium', JSON.stringify(premiumData));
