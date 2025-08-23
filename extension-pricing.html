@@ -51,11 +51,20 @@
                     name: 'Shadow Market Tracker',
                     description: 'Premium Extension Subscription',
                     handler: function(response) {
-                        localStorage.setItem('shadowMarketTracker_premium', JSON.stringify({
+                        const premiumData = {
                             active: true,
                             paymentId: response.razorpay_payment_id,
-                            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
-                        }));
+                            expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                            activatedAt: new Date().toISOString()
+                        };
+                        
+                        localStorage.setItem('shadowMarketTracker_premium', JSON.stringify(premiumData));
+                        
+                        // Store in extension storage
+                        if (typeof chrome !== 'undefined' && chrome.storage) {
+                            chrome.storage.local.set({ premiumStatus: premiumData });
+                        }
+                        
                         document.getElementById('successMessage').style.display = 'block';
                     }
                 };
