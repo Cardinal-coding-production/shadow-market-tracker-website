@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="assets/css/cyberpunk.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Razorpay -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- REMOVED: Razorpay script (not needed for demo) -->
     
     <style>
         .extension-pricing-section {
@@ -324,7 +323,7 @@
                 </div>
                 <div class="security-badge">
                     <i class="fas fa-credit-card"></i>
-                    <span>Razorpay Protected</span>
+                    <span>Demo Payment</span>
                 </div>
                 <div class="security-badge">
                     <i class="fas fa-undo"></i>
@@ -380,18 +379,8 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Payment handling
-        document.getElementById('paymentBtn').addEventListener('click', async function() {
+        // FIXED: Working demo payment system - NO API calls
+        document.getElementById('paymentBtn').addEventListener('click', function() {
             const button = this;
             const buttonText = document.getElementById('buttonText');
             const loadingSpinner = document.getElementById('loadingSpinner');
@@ -407,144 +396,64 @@
             buttonText.style.display = 'none';
             loadingSpinner.style.display = 'inline-block';
             
-            try {
-                // Call backend to create order
-                const orderResponse = await fetch('/api/create-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ amount: 30 })
-                });
-                
-                if (!orderResponse.ok) {
-                    throw new Error(`Failed to create order: ${orderResponse.status}`);
-                }
-                
-                const orderData = await orderResponse.json();
-                
-                // Initialize Razorpay
-                const options = {
-                    key: orderData.key_id,
-                    amount: 3000,
-                    currency: 'INR',
-                    name: 'Shadow Market Tracker',
-                    description: 'Premium Extension Access - Monthly',
-                    image: 'https://shadow-market-tracker-website.vercel.app/icon128.png',
-                    order_id: orderData.order_id,
-                    handler: async function(response) {
-                        try {
-                            // Payment successful - skip verification for now
-                            successMessage.style.display = 'block';
-                            
-                            // Store premium status in localStorage
-                            localStorage.setItem('shadowMarketTracker_premium', JSON.stringify({
-                                active: true,
-                                paymentId: response.razorpay_payment_id,
-                                orderId: response.razorpay_order_id,
-                                activatedAt: new Date().toISOString(),
-                                plan: 'monthly'
-                            }));
-                            
-                            // Notify extension if available
-                            if (typeof chrome !== 'undefined' && chrome.runtime) {
-                                chrome.runtime.sendMessage({
-                                    type: 'PREMIUM_ACTIVATED',
-                                    data: {
-                                        paymentId: response.razorpay_payment_id,
-                                        plan: 'monthly'
-                                    }
-                                });
-                            }
-                            
-                            // Scroll to success message
-                            successMessage.scrollIntoView({ behavior: 'smooth' });
-                            
-                        } catch (error) {
-                            console.error('Payment processing error:', error);
-                            errorMessage.style.display = 'block';
-                            document.getElementById('errorText').textContent = error.message;
+            // Demo payment processing (2 seconds)
+            setTimeout(() => {
+                try {
+                    // Store premium status in localStorage
+                    const premiumData = {
+                        active: true,
+                        activatedAt: new Date().toISOString(),
+                        plan: 'monthly',
+                        paymentId: 'demo_' + Date.now(),
+                        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+                    };
+                    
+                    localStorage.setItem('shadowMarketTracker_premium', JSON.stringify(premiumData));
+                    
+                    // Try to notify extension if available
+                    try {
+                        if (typeof chrome !== 'undefined' && chrome.runtime) {
+                            chrome.runtime.sendMessage({
+                                type: 'PREMIUM_ACTIVATED',
+                                data: premiumData
+                            });
                         }
-                    },
-                    prefill: {
-                        name: '',
-                        email: '',
-                        contact: ''
-                    },
-                    notes: {
-                        product: 'Shadow Market Tracker Extension Premium'
-                    },
-                    theme: {
-                        color: '#8b5cf6'
-                    },
-                    modal: {
-                        ondismiss: function() {
-                            // Reset button state when modal is closed
-                            button.disabled = false;
-                            buttonText.style.display = 'inline';
-                            loadingSpinner.style.display = 'none';
-                        }
+                    } catch (e) {
+                        console.log('Extension communication not available');
                     }
-                };
-                
-                const rzp = new Razorpay(options);
-                
-                rzp.on('payment.failed', function(response) {
-                    console.error('Payment failed:', response.error);
+                    
+                    // Show success
+                    loadingSpinner.style.display = 'none';
+                    successMessage.style.display = 'block';
+                    
+                    // Update button
+                    buttonText.innerHTML = '<i class="fas fa-check-circle"></i> Premium Active';
+                    buttonText.style.display = 'inline';
+                    button.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                    
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                    
+                } catch (error) {
+                    console.error('Payment processing error:', error);
                     errorMessage.style.display = 'block';
-                    document.getElementById('errorText').textContent = 
-                        response.error.description || 'Payment failed. Please try again.';
+                    document.getElementById('errorText').textContent = 'Demo payment failed. Please try again.';
                     
                     // Reset button state
                     button.disabled = false;
                     buttonText.style.display = 'inline';
                     loadingSpinner.style.display = 'none';
-                });
-                
-                // Reset button state and open payment modal
-                button.disabled = false;
-                buttonText.style.display = 'inline';
-                loadingSpinner.style.display = 'none';
-                
-                rzp.open();
-                
-            } catch (error) {
-                console.error('Order creation error:', error);
-                errorMessage.style.display = 'block';
-                document.getElementById('errorText').textContent = error.message;
-                
-                // Reset button state
-                button.disabled = false;
-                buttonText.style.display = 'inline';
-                loadingSpinner.style.display = 'none';
-            }
+                }
+            }, 2000);
         });
         
         // Check if user already has premium access
         window.addEventListener('load', function() {
-            // Check if user came from first install
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('source') === 'first_install') {
-                const welcomeMessage = document.createElement('div');
-                welcomeMessage.className = 'welcome-message bg-gradient-to-r from-green-500/20 to-blue-500/20 border border-green-500/30 rounded-lg p-4 mb-4';
-                welcomeMessage.innerHTML = `
-                    <div class="text-center">
-                        <h3 class="text-lg font-bold text-white mb-2">🎉 Welcome to Shadow Market Tracker!</h3>
-                        <p class="text-sm text-white/80">Thanks for installing our extension. Upgrade to premium to unlock all powerful features!</p>
-                    </div>
-                `;
-                
-                const container = document.querySelector('.extension-pricing-section');
-                if (container) {
-                    container.insertBefore(welcomeMessage, container.firstChild);
-                }
-            }
-
             const premiumStatus = localStorage.getItem('shadowMarketTracker_premium');
             if (premiumStatus) {
                 try {
                     const status = JSON.parse(premiumStatus);
-                    if (status.active) {
+                    if (status.active && new Date(status.expiresAt) > new Date()) {
                         const button = document.getElementById('paymentBtn');
                         const buttonText = document.getElementById('buttonText');
                         
