@@ -4,15 +4,11 @@
   "description": "Shadow Market Tracker Website with Payment Gateway",
   "main": "index.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'Build complete'",
-    "start": "vercel dev"
+    "build": "echo 'Build complete'"
   },
   "dependencies": {
-    "razorpay": "^2.9.2",
-    "crypto": "^1.0.1"
+    "razorpay": "^2.9.2"
   },
-  "devDependencies": {},
   "keywords": ["payment", "razorpay", "extension"],
   "author": "Shadow Market Tracker",
   "license": "MIT"
