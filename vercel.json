@@ -3,9 +3,5 @@
     "api/payment.js": {
       "runtime": "nodejs18.x"
     }
-  },
-  "env": {
-    "RAZORPAY_KEY_ID": "rzp_live_R5bUcfPrk6LOKC",
-    "RAZORPAY_KEY_SECRET": "60FxdU1hJh11gi2EuRDdfeAY"
   }
 }
