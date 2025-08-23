@@ -1,27 +1,11 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "**",
-      "use": "@vercel/static"
+  "functions": {
+    "api/payment.js": {
+      "runtime": "nodejs18.x"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
+  },
+  "env": {
+    "RAZORPAY_KEY_ID": "rzp_live_R5bUcfPrk6LOKC",
+    "RAZORPAY_KEY_SECRET": "60FxdU1hJh11gi2EuRDdfeAY"
+  }
 }
